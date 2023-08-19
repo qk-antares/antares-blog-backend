@@ -1,0 +1,6 @@
+GET http://antares.cool/api/member/mail/sendCode?mail=2419229016@qq.com
+Content-Type: application/json
+
+{}
+
+###

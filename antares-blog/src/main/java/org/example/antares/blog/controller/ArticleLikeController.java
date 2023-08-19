@@ -1,0 +1,29 @@
+package org.example.antares.blog.controller;
+
+import org.example.antares.blog.annotation.LoginRequired;
+import org.example.antares.blog.service.ArticleLikeService;
+import org.example.antares.common.model.response.R;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+@RestController
+@RequestMapping("/blog")
+@Validated
+public class ArticleLikeController {
+    @Resource
+    private ArticleLikeService articleLikeService;
+
+    /**
+     * 对文章进行点赞（点赞的消息同时要放进redis里，只计一个数，用户点击查看消息后再到数据库查询）
+     * @param id
+     * @param request
+     * @return
+     */
+    @PostMapping("/article/{id}/like")
+    public R likeBlog(@PathVariable("id") Long id, HttpServletRequest request){
+        return articleLikeService.likeBlog(id, request);
+    }
+}

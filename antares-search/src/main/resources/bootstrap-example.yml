@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: antares-search
+  profiles:
+    active: dev # 开发环境
+  cloud:
+    nacos:
+      server-addr:  # Nacos地址
+      config:
+        file-extension: yaml # 文件后缀名
+        namespace:  # 命名空间

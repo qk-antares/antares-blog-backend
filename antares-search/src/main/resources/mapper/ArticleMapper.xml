@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.antares.search.mapper.ArticleMapper">
+
+    <resultMap id="BaseResultMap" type="org.example.antares.search.model.entity.Article">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="summary" column="summary" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="prime" column="prime" jdbcType="TINYINT"/>
+            <result property="isTop" column="is_top" jdbcType="TINYINT"/>
+            <result property="isGlobalTop" column="is_global_top" jdbcType="TINYINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="closeComment" column="close_comment" jdbcType="TINYINT"/>
+            <result property="viewCount" column="view_count" jdbcType="BIGINT"/>
+            <result property="likeCount" column="like_count" jdbcType="BIGINT"/>
+            <result property="starCount" column="star_count" jdbcType="BIGINT"/>
+            <result property="commentCount" column="comment_count" jdbcType="BIGINT"/>
+            <result property="thumbnail1" column="thumbnail1" jdbcType="VARCHAR"/>
+            <result property="thumbnail2" column="thumbnail2" jdbcType="VARCHAR"/>
+            <result property="thumbnail3" column="thumbnail3" jdbcType="VARCHAR"/>
+            <result property="createdBy" column="created_by" jdbcType="BIGINT"/>
+            <result property="score" column="score" jdbcType="INTEGER"/>
+            <result property="hot" column="hot" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,summary,
+        content,prime,is_top,
+        is_global_top,status,close_comment,
+        view_count,like_count,star_count,
+        comment_count,thumbnail1,thumbnail2,
+        thumbnail3,created_by,score,
+        hot,create_time,update_time,
+        is_delete
+    </sql>
+</mapper>

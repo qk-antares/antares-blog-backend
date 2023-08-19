@@ -1,0 +1,10 @@
+GET http://localhost:8124/blog/user/article
+Content-Type: application/json
+
+{
+  "uid": 2,
+  "current": 2,
+  "pageSize": 3
+}
+
+###
