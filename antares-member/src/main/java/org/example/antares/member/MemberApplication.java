@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "org.example.antares.member.feign")
 @EnableRabbit
 @EnableScheduling
 public class MemberApplication {

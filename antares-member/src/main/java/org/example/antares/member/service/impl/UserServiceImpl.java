@@ -561,7 +561,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         cacheRecommendUids(uid, result);
 
         long end = System.currentTimeMillis();
-        log.info("缓存redis耗时：{}", end - start);
 
         return result;
     }

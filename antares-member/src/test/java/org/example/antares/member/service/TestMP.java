@@ -34,7 +34,6 @@ public class TestMP {
     }
 
     @Test
-    //耗时1594 3468
     //@Transactional
     void testUpdate(){
         long start = System.currentTimeMillis();
@@ -46,6 +45,5 @@ public class TestMP {
                 .eq("id", 3)
                 .setSql("to_unread = to_unread + 1").eq("to_uid", 11));
         long end = System.currentTimeMillis();
-        log.info("耗时：{}", end - start);
     }
 }

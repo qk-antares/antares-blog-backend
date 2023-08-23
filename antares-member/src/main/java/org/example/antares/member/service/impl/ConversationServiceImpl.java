@@ -60,7 +60,6 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
         long start = System.currentTimeMillis();
         Page<Conversation> conversationPage = page(new Page<>(pageNum, pageSize), queryWrapper);
         long end = System.currentTimeMillis();
-        log.info("分页耗时：{}", end - start);
 
         //3. 转换为vos
         List<ConversationVo> vos = conversationsToVos(conversationPage.getRecords(), uid);

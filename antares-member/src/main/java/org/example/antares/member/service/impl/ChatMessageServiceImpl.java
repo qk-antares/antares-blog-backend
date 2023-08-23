@@ -69,7 +69,6 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageMapper, ChatM
         long start = System.currentTimeMillis();
         Page<ChatMessage> messagePage = page(new Page<>(pageNum, pageSize), queryWrapper);
         long end = System.currentTimeMillis();
-        log.info("分页耗时：{}", end - start);
 
         //3. 转换为vos
         List<MessageVo> vos = new ArrayList<>();

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Antares
- * @date 2023/5/18 9:49
+ * @time 2023/5/18 9:49
  * @description 远程调用保留cookie
  */
 @Configuration

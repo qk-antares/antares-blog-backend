@@ -37,6 +37,5 @@ public class PipelinedTest {
 
         System.out.println(execute);
         long end = System.currentTimeMillis();
-        log.info("耗时：{}", end - start);
     }
 }

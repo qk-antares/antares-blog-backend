@@ -381,7 +381,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         long start = System.currentTimeMillis();
         Page<Article> articlePage = page(new Page<>(pageNum, pageSize), queryWrapper);
         long end = System.currentTimeMillis();
-        log.info("分页耗时：{}", end - start);
 
         //3. 转换为vos
         List<ArticleVo> articleVos = articlesToVos(articlePage.getRecords(), currentUser == null ? null : currentUser.getUid());
@@ -520,7 +519,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         }
 
         long end = System.currentTimeMillis();
-        log.info("内部耗时：{}", end - start);
         return vo;
     }
 
@@ -563,7 +561,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         }
 
         long end = System.currentTimeMillis();
-        log.info("已登录用户转换vo耗时：{}", end - start);
         return vo;
     }
 
@@ -591,7 +588,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         }
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         long end = System.currentTimeMillis();
-        log.info("转换vo耗时：{}", end - start);
 
         return Arrays.asList(articleVos);
     }

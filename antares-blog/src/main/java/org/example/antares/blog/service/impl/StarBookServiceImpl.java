@@ -109,7 +109,6 @@ public class StarBookServiceImpl extends ServiceImpl<StarBookMapper, StarBook>
         long start = System.currentTimeMillis();
         Page<ArticleStar> articleLikePage = articleStarMapper.selectPage(new Page<>(pageNum, pageSize), queryWrapper);
         long end = System.currentTimeMillis();
-        log.info("分页耗时：{}", end - start);
 
         //3. 转换为vos
         List<Long> articleIds = articleLikePage.getRecords().stream().map(ArticleStar::getArticleId).collect(Collectors.toList());

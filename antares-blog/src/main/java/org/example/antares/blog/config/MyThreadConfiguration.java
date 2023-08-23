@@ -14,18 +14,20 @@ import java.util.concurrent.TimeUnit;
 public class MyThreadConfiguration {
     @Bean
     public ThreadPoolExecutor threadPoolExecutor(ThreadPoolConfigProperties pool){
-        return new ThreadPoolExecutor(pool.getCoreSize(), pool.getMaxSize(), pool.getKeepAliveTime(),
+        return new ThreadPoolExecutor(
+                pool.getCoreSize(), pool.getMaxSize(), pool.getKeepAliveTime(),
                 TimeUnit.SECONDS,
-                new LinkedBlockingDeque<>(100000),
+                new LinkedBlockingDeque<>(10000),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.AbortPolicy());
     }
 
     @Bean
     public ThreadPoolExecutor childThreadPoolExecutor(ThreadPoolConfigProperties pool){
-        return new ThreadPoolExecutor(pool.getCoreSize(), pool.getMaxSize(), pool.getKeepAliveTime(),
+        return new ThreadPoolExecutor(
+                pool.getCoreSize(), pool.getMaxSize(), pool.getKeepAliveTime(),
                 TimeUnit.SECONDS,
-                new LinkedBlockingDeque<>(100000),
+                new LinkedBlockingDeque<>(10000),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.AbortPolicy());
     }

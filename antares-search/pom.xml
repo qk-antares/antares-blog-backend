@@ -10,7 +10,10 @@
         <relativePath/>
     </parent>
 
+    <groupId>org.example.antares</groupId>
     <artifactId>antares-search</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <name>antares-search</name>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

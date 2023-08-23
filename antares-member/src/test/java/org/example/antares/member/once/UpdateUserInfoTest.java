@@ -133,6 +133,5 @@ public class UpdateUserInfoTest {
         userService.updateBatchById(users);
 
         long end = System.currentTimeMillis();
-        System.out.println("耗时" + (end-start));
     }
 }

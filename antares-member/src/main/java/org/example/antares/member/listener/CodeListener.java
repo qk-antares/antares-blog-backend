@@ -22,7 +22,7 @@ public class CodeListener {
     private MailUtil mailUtil;
 
     @RabbitHandler
-    public void handleFollowMessage(Message message, String[] sendCodeRequest, Channel channel) {
+    public void handleCodeMessage(Message message, String[] sendCodeRequest, Channel channel) {
         String type = sendCodeRequest[0];
         String dest = sendCodeRequest[1];
         String codeNum = sendCodeRequest[2];

@@ -122,6 +122,5 @@ public class InsertBlogTest {
 
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
         long end = System.currentTimeMillis();
-        System.out.println("耗时" + (end-start));
     }
 }
