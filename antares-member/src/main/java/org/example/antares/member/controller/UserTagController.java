@@ -22,7 +22,7 @@ public class UserTagController {
      * @return
      */
     @GetMapping
-    public R getAllTags(){
+    public R<List<UserTagCategoryVo>> getAllTags(){
         List<UserTagCategoryVo> allTags = userTagService.getAllTags();
         return R.ok(allTags);
     }
@@ -34,7 +34,7 @@ public class UserTagController {
      * @return
      */
     @PutMapping
-    public R addATag(@RequestBody UserTagAddRequest userTagAddRequest, HttpServletRequest request){
+    public R<UserTagVo> addATag(@RequestBody UserTagAddRequest userTagAddRequest, HttpServletRequest request){
         UserTagVo userTagVo = userTagService.addATag(userTagAddRequest, request);
         return R.ok(userTagVo);
     }

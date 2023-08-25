@@ -26,7 +26,7 @@ public class ArticleCommentController {
      * @return
      */
     @GetMapping("/{id}")
-    public R getRootCommentsOfArticle(@PathVariable("id") Long id){
+    public R<List<RootCommentVo>> getRootCommentsOfArticle(@PathVariable("id") Long id){
         List<RootCommentVo> vos = articleCommentService.getRootCommentsOfArticle(id);
         return R.ok(vos);
     }
@@ -37,7 +37,7 @@ public class ArticleCommentController {
      * @return
      */
     @GetMapping("/children/{id}")
-    public R getChildrenOfRoot(@PathVariable("id") Long id){
+    public R<List<ChildrenCommentVo>> getChildrenOfRoot(@PathVariable("id") Long id){
         List<ChildrenCommentVo> vos = articleCommentService.getChildrenOfRoot(id);
         return R.ok(vos);
     }
@@ -50,7 +50,8 @@ public class ArticleCommentController {
      */
     @PostMapping("/like/{id}")
     public R likeComment(@PathVariable("id") Long id){
-        return articleCommentService.likeComment(id);
+        articleCommentService.likeComment(id);
+        return R.ok();
     }
 
     /**
@@ -61,6 +62,7 @@ public class ArticleCommentController {
      */
     @PostMapping
     public R publishComment(@Valid @RequestBody PostCommentRequest postCommentRequest, HttpServletRequest request){
-        return articleCommentService.publishComment(postCommentRequest, request);
+        articleCommentService.publishComment(postCommentRequest, request);
+        return R.ok();
     }
 }

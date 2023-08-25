@@ -1,12 +1,9 @@
 package org.example.antares.member.controller;
 
-import org.example.antares.common.model.dto.UsernameAndAvtarDto;
 import org.example.antares.common.model.response.R;
 import org.example.antares.common.model.vo.UserInfoVo;
-import org.example.antares.common.utils.BeanCopyUtils;
 import org.example.antares.member.model.dto.user.PwdUpdateRequest;
 import org.example.antares.member.model.dto.user.UserUpdateRequest;
-import org.example.antares.member.model.entity.User;
 import org.example.antares.member.model.vo.user.RecommendUserVo;
 import org.example.antares.member.service.UserService;
 import org.hibernate.validator.constraints.Length;
@@ -17,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 
@@ -38,7 +34,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/info")
-    public R getCurrentUser(HttpServletRequest request){
+    public R<UserInfoVo> getCurrentUser(HttpServletRequest request){
         UserInfoVo currentUser = userService.getCurrentUser(request);
         return R.ok(currentUser);
     }
@@ -104,7 +100,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/info/{uid}")
-    public R info(@PathVariable("uid") Long uid, HttpServletRequest request){
+    public R<UserInfoVo> info(@PathVariable("uid") Long uid, HttpServletRequest request){
         UserInfoVo userByUid = userService.getUserByUid(uid, request);
         return R.ok(userByUid);
     }
@@ -115,7 +111,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/recommend")
-    public R getRecommendUsers(HttpServletRequest request){
+    public R<List<RecommendUserVo>> getRecommendUsers(HttpServletRequest request){
         List<RecommendUserVo> recommendUsers = userService.getRecommendUsers(request);
         return R.ok(recommendUsers);
     }
@@ -126,14 +122,8 @@ public class UserController {
      * @return
      */
     @GetMapping("/recommend/refresh")
-    public R refreshRecommendUsers(HttpServletRequest request){
+    public R<List<RecommendUserVo>> refreshRecommendUsers(HttpServletRequest request){
         List<RecommendUserVo> recommendUsers = userService.refreshRecommendUsers(request);
         return R.ok(recommendUsers);
     }
-
-    //@GetMapping("/{uid}/username/avatar")
-    //public R getUsernameAndAvatar(@PathVariable("uid") Long uid){
-    //    UsernameAndAvtarDto dto = userService.getUsernameAndAvatar(uid);
-    //    return R.ok(dto);
-    //}
 }

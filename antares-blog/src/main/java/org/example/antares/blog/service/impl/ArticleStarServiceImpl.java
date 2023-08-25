@@ -12,6 +12,7 @@ import org.example.antares.blog.model.entity.ArticleStar;
 import org.example.antares.blog.model.entity.StarBook;
 import org.example.antares.blog.service.ArticleStarService;
 import org.example.antares.blog.utils.RedisUtils;
+import org.example.antares.common.exception.BusinessException;
 import org.example.antares.common.model.enums.AppHttpCodeEnum;
 import org.example.antares.common.model.response.R;
 import org.example.antares.common.model.vo.UserInfoVo;
@@ -55,7 +56,7 @@ public class ArticleStarServiceImpl extends ServiceImpl<ArticleStarMapper, Artic
 
     @Override
     @Transactional
-    public R starBlog(Long id, List<Long> bookIds, HttpServletRequest request) {
+    public Integer starBlog(Long id, List<Long> bookIds, HttpServletRequest request) {
         UserInfoVo currentUser = redisUtils.getCurrentUserWithValidation(request);
 
         String cacheKey = ARTICLE_STAR_PREFIX + id + ARTICLE_STAR_SUFFIX;
@@ -64,7 +65,7 @@ public class ArticleStarServiceImpl extends ServiceImpl<ArticleStarMapper, Artic
         //1. 取消收藏
         if(isStared && CollectionUtils.isEmpty(bookIds)){
             cancelStar(id, currentUser, cacheKey, operations);
-            return R.ok(0);
+            return 0;
         } else {
             //2. 新收藏或更改收藏
             //2.1 校验收藏夹参数
@@ -72,24 +73,24 @@ public class ArticleStarServiceImpl extends ServiceImpl<ArticleStarMapper, Artic
             List<StarBook> starBooks = starBookMapper.selectBatchIds(bookIds);
             //2.1.1 某个收藏夹不存在
             if(starBooks.size() != bookIds.size()){
-                return R.error(AppHttpCodeEnum.NOT_EXIST);
+                throw new BusinessException(AppHttpCodeEnum.NOT_EXIST);
             }
             //2.1.2 接着检查这些收藏夹是否都属于这个用户
             for (StarBook starBook : starBooks) {
                 //某个收藏夹不属于当前用户
                 if(!starBook.getCreateBy().equals(currentUser.getUid())){
-                    return R.error(AppHttpCodeEnum.NO_AUTH);
+                    throw new BusinessException(AppHttpCodeEnum.NO_AUTH);
                 }
             }
 
             // 更改收藏
             if(isStared) {
                 changeStar(id, bookIds, currentUser);
-                return R.ok(1);
+                return 1;
             } else {
                 // 新收藏
                 newStar(id, bookIds, currentUser, cacheKey, operations);
-                return R.ok(2);
+                return 2;
             }
         }
     }

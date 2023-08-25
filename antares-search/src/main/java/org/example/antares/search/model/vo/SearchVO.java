@@ -9,6 +9,6 @@ import java.io.Serializable;
  * 聚合搜索
  */
 @Data
-public class SearchVO implements Serializable {
+public class SearchVo implements Serializable {
     private Page<?> pageData;
 }

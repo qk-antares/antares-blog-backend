@@ -18,25 +18,25 @@ import java.util.List;
 * @createDate 2023-03-24 20:40:13
 */
 public interface ArticleService extends IService<Article> {
-    R createDraft(ArticleCreateRequest articleCreateRequest, HttpServletRequest request);
+    Long createDraft(ArticleCreateRequest articleCreateRequest, HttpServletRequest request);
 
-    R getArticleCoverById(Long id, HttpServletRequest request);
+    ArticleVo getArticleCoverById(Long id, HttpServletRequest request);
 
     ArticleVo getArticleBasicById(Long id);
 
-    R updateBasicById(Long id, ArticleCreateRequest articleCreateRequest, HttpServletRequest request);
+    void updateBasicById(Long id, ArticleCreateRequest articleCreateRequest, HttpServletRequest request);
 
-    R getArticleContentById(Long id);
+    ArticleContentVo getArticleContentById(Long id);
 
-    R updateContentById(Long id, String content, HttpServletRequest request);
+    void updateContentById(Long id, String content, HttpServletRequest request);
 
     void publishArticle(Long id, ArticleContentVo articleContentVo, HttpServletRequest request);
 
-    R getArticlesByUid(ArticleQueryRequest articleQueryRequest, HttpServletRequest request);
+    Page<ArticleVo> getArticlesByUid(ArticleQueryRequest articleQueryRequest, HttpServletRequest request);
 
     List<ArticleVo> getArticlesByIds(List<Long> articleIds, HttpServletRequest request);
 
-    R listArticleVoByPage(ArticleQueryRequest articleQueryRequest, HttpServletRequest request);
+    Page<ArticleVo> listArticleVoByPage(ArticleQueryRequest articleQueryRequest, HttpServletRequest request);
 
     List<Article> getHots();
 

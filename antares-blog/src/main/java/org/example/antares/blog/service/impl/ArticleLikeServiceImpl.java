@@ -11,6 +11,7 @@ import org.example.antares.blog.model.vo.star.ArticleLikeStarVo;
 import org.example.antares.blog.service.ArticleLikeService;
 import org.example.antares.blog.utils.RedisUtils;
 import org.example.antares.common.constant.RedisConstants;
+import org.example.antares.common.exception.BusinessException;
 import org.example.antares.common.model.enums.AppHttpCodeEnum;
 import org.example.antares.common.model.response.R;
 import org.example.antares.common.model.vo.UserInfoVo;
@@ -52,7 +53,7 @@ public class ArticleLikeServiceImpl extends ServiceImpl<ArticleLikeMapper, Artic
     private ThreadPoolExecutor threadPoolExecutor;
 
     @Override
-    public R likeBlog(Long id, HttpServletRequest request) {
+    public void likeBlog(Long id, HttpServletRequest request) {
         UserInfoVo currentUser = redisUtils.getCurrentUserWithValidation(request);
         //查询文章是否存在，只要文章存在就返回成功
         Article article = articleMapper.selectById(id);
@@ -61,9 +62,8 @@ public class ArticleLikeServiceImpl extends ServiceImpl<ArticleLikeMapper, Artic
             rabbitTemplate.convertAndSend("exchange.direct", "like",
                     new Long[]{currentUser.getUid(), id, article.getCreatedBy()},
                     new CorrelationData(UUID.randomUUID().toString()));
-            return R.ok();
         } else {
-            return R.error(AppHttpCodeEnum.NOT_EXIST);
+            throw new BusinessException(AppHttpCodeEnum.NOT_EXIST);
         }
     }
 

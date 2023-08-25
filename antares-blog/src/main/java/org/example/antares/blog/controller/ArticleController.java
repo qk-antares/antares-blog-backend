@@ -32,20 +32,23 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/article")
-    public R createDraft(@Valid @RequestBody ArticleCreateRequest articleCreateRequest,
+    public R<Long> createDraft(@Valid @RequestBody ArticleCreateRequest articleCreateRequest,
                          HttpServletRequest request){
-        return articleService.createDraft(articleCreateRequest, request);
+        Long articleId = articleService.createDraft(articleCreateRequest, request);
+        return R.ok(articleId);
     }
 
     /**
-     * 获取封面信息（除去content的完整信息，因为content占用了文章信息的大部分），如果请求打到这里，证明cover不在缓存里
+     * 获取封面信息（除去content的完整信息，因为content占用了文章信息的大部分），
+     * 如果请求打到这里，证明cover不在缓存里，该函数被lua脚本调用
      * @param id
      * @param request 这个参数的作用是校验用户是否点赞和收藏了
      * @return
      */
     @GetMapping("/article/{id}/cover")
-    public R getArticleCoverById(@PathVariable("id") Long id, HttpServletRequest request){
-        return articleService.getArticleCoverById(id, request);
+    public R<ArticleVo> getArticleCoverById(@PathVariable("id") Long id, HttpServletRequest request){
+        ArticleVo articleCover = articleService.getArticleCoverById(id, request);
+        return R.ok(articleCover);
     }
 
     /**
@@ -54,9 +57,9 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/article/{id}/basic")
-    public R getArticleBasicById(@PathVariable("id") Long id) {
-        ArticleVo vo = articleService.getArticleBasicById(id);
-        return R.ok(vo);
+    public R<ArticleVo> getArticleBasicById(@PathVariable("id") Long id) {
+        ArticleVo articleBasic = articleService.getArticleBasicById(id);
+        return R.ok(articleBasic);
     }
 
     /**
@@ -70,7 +73,8 @@ public class ArticleController {
     public R updateBasicById(@PathVariable("id") Long id,
                              @RequestBody ArticleCreateRequest articleCreateRequest,
                              HttpServletRequest request){
-        return articleService.updateBasicById(id, articleCreateRequest, request);
+        articleService.updateBasicById(id, articleCreateRequest, request);
+        return R.ok();
     }
 
     /**
@@ -80,8 +84,9 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/article/{id}/content")
-    public R getArticleContentById(@PathVariable("id") Long id){
-        return articleService.getArticleContentById(id);
+    public R<ArticleContentVo> getArticleContentById(@PathVariable("id") Long id){
+        ArticleContentVo articleContent = articleService.getArticleContentById(id);
+        return R.ok(articleContent);
     }
 
     /**
@@ -95,7 +100,8 @@ public class ArticleController {
     public R updateContentById(@PathVariable("id") Long id,
                                @RequestBody ArticleContentVo articleContentVo,
                                HttpServletRequest request){
-        return articleService.updateContentById(id, articleContentVo.getContent(), request);
+        articleService.updateContentById(id, articleContentVo.getContent(), request);
+        return R.ok();
     }
 
     /**
@@ -126,10 +132,11 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/user/article")
-    public R getArticlesByUid(@RequestBody ArticleQueryRequest articleQueryRequest, HttpServletRequest request){
+    public R<Page<ArticleVo>> getArticlesByUid(@RequestBody ArticleQueryRequest articleQueryRequest, HttpServletRequest request){
         // 限制爬虫
         ThrowUtils.throwIf(articleQueryRequest.getPageSize() > 20, AppHttpCodeEnum.PARAMS_ERROR, "分页大小超出限制");
-        return articleService.getArticlesByUid(articleQueryRequest, request);
+        Page<ArticleVo> articleVoPage = articleService.getArticlesByUid(articleQueryRequest, request);
+        return R.ok(articleVoPage);
     }
 
     /**
@@ -139,11 +146,12 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/list/page/vo")
-    public R listArticleVoByPage(@RequestBody ArticleQueryRequest articleQueryRequest,
+    public R<Page<ArticleVo>> listArticleVoByPage(@RequestBody ArticleQueryRequest articleQueryRequest,
                                  HttpServletRequest request) {
         // 限制爬虫
         ThrowUtils.throwIf(articleQueryRequest.getPageSize() > 20, AppHttpCodeEnum.PARAMS_ERROR, "分页大小超出限制");
-        return articleService.listArticleVoByPage(articleQueryRequest, request);
+        Page<ArticleVo> articleVoPage = articleService.listArticleVoByPage(articleQueryRequest, request);
+        return R.ok(articleVoPage);
     }
 
     /**
@@ -151,7 +159,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/article/hot")
-    public R getHot(){
+    public R<List<Article>> getHot(){
         List<Article> hots = articleService.getHots();
         return R.ok(hots);
     }
@@ -161,7 +169,7 @@ public class ArticleController {
      * @return
      */
     @GetMapping("/article/global/top")
-    public R getGlobalTop(){
+    public R<List<Article>> getGlobalTop(){
         List<Article> tops = articleService.getGlobalTop();
         return R.ok(tops);
     }
@@ -172,7 +180,7 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/article/follow/updates")
-    public R getAllUpdates(@RequestBody ArticleQueryRequest articleQueryRequest,
+    public R<Page<ArticleVo>> getAllUpdates(@RequestBody ArticleQueryRequest articleQueryRequest,
                            HttpServletRequest request){
         Page<ArticleVo> updates = articleService.getUpdates(articleQueryRequest, request);
         return R.ok(updates);

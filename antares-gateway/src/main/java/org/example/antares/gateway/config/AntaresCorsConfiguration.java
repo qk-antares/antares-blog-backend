@@ -24,7 +24,6 @@ public class AntaresCorsConfiguration {
 
         source.registerCorsConfiguration("/**", corsConfiguration);
 
-        System.out.println("hello");
         return new CorsWebFilter(source);
     }
 }

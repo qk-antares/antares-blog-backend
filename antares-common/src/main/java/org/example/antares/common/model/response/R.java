@@ -1,53 +1,42 @@
 package org.example.antares.common.model.response;
 
+import lombok.Data;
 import org.example.antares.common.model.enums.AppHttpCodeEnum;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
-public class R extends HashMap<String, Object> implements Serializable {
-    private static final long serialVersionUID = 6682215287252208284L;
+@Data
+public class R<T> implements Serializable {
+	private static final long serialVersionUID = 6682215287252208284L;
 
-    public R() {
-        put("code", AppHttpCodeEnum.SUCCESS.getCode());
-        put("msg", AppHttpCodeEnum.SUCCESS.getMsg());
-    }
+	private int code;
+	private String msg;
+	private T data;
 
-    public static R ok() {
-        return new R();
-    }
+	public R(int code, String msg){
+		this.code = code;
+		this.msg = msg;
+	}
 
-    public static R ok(Object data){
-        R r = ok();
-        r.put("data", data);
-        return r;
-    }
+	public static R ok() {
+		return new R(AppHttpCodeEnum.SUCCESS.getCode(), AppHttpCodeEnum.SUCCESS.getMsg());
+	}
 
-    public R put(String key, Object value) {
-        super.put(key, value);
-        return this;
-    }
+	public static <T> R<T> ok(T data){
+		R<T> r = new R<>(AppHttpCodeEnum.SUCCESS.getCode(), AppHttpCodeEnum.SUCCESS.getMsg());
+		r.setData(data);
+		return r;
+	}
 
-    public static R error() {
-        return error(AppHttpCodeEnum.INTERNAL_SERVER_ERROR.getCode(), AppHttpCodeEnum.INTERNAL_SERVER_ERROR.getMsg());
-    }
+	public static R error() {
+		return new R(AppHttpCodeEnum.INTERNAL_SERVER_ERROR.getCode(), AppHttpCodeEnum.INTERNAL_SERVER_ERROR.getMsg());
+	}
 
-    public static R error(AppHttpCodeEnum appHttpCodeEnum){
-        return error(appHttpCodeEnum.code, appHttpCodeEnum.msg);
-    }
+	public static R error(AppHttpCodeEnum appHttpCodeEnum){
+		return new R(appHttpCodeEnum.code, appHttpCodeEnum.msg);
+	}
 
-    public static R error(int code, String msg) {
-        R r = new R();
-        r.put("code", code);
-        r.put("msg", msg);
-        return r;
-    }
-
-    public Integer getCode(){
-        return (Integer) this.get("code");
-    }
-
-    public Object getData(){
-        return this.get("data");
-    }
+	public static R error(int code, String msg) {
+		return new R(code, msg);
+	}
 }

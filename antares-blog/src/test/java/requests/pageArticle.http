@@ -1,10 +1,4 @@
-GET http://localhost:8124/blog/user/article
+GET http://localhost:8135/blog/article/1/content
 Content-Type: application/json
-
-{
-  "uid": 2,
-  "current": 2,
-  "pageSize": 3
-}
 
 ###

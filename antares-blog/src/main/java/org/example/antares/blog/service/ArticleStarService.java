@@ -13,5 +13,5 @@ import java.util.List;
 * @createDate 2023-04-20 21:31:59
 */
 public interface ArticleStarService extends IService<ArticleStar> {
-    R starBlog(Long id, List<Long> bookIds, HttpServletRequest request);
+    Integer starBlog(Long id, List<Long> bookIds, HttpServletRequest request);
 }

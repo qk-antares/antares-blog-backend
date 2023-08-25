@@ -25,9 +25,10 @@ public class ArticleStarController {
      * @return
      */
     @PostMapping("/article/{id}/star")
-    public R starBlog(@PathVariable("id") Long id,
+    public R<Integer> starBlog(@PathVariable("id") Long id,
                       @RequestBody List<Long> bookIds,
                       HttpServletRequest request){
-        return articleStarService.starBlog(id, bookIds, request);
+        Integer result = articleStarService.starBlog(id, bookIds, request);
+        return R.ok(result);
     }
 }

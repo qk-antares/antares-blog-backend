@@ -83,13 +83,13 @@ public class StarBookServiceImpl extends ServiceImpl<StarBookMapper, StarBook>
     }
 
     @Override
-    public R createStarBook(String name, HttpServletRequest request) {
+    public Long createStarBook(String name, HttpServletRequest request) {
         UserInfoVo currentUser = redisUtils.getCurrentUserWithValidation(request);
         StarBook starBook = new StarBook();
         starBook.setName(name);
         starBook.setCreateBy(currentUser.getUid());
         save(starBook);
-        return R.ok(starBook.getId());
+        return starBook.getId();
     }
 
     @Override

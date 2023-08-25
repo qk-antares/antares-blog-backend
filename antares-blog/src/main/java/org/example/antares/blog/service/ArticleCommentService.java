@@ -15,11 +15,11 @@ import java.util.List;
 * @createDate 2023-04-20 21:31:59
 */
 public interface ArticleCommentService extends IService<ArticleComment> {
-    R publishComment(PostCommentRequest postCommentRequest, HttpServletRequest request);
+    void publishComment(PostCommentRequest postCommentRequest, HttpServletRequest request);
 
     List<RootCommentVo> getRootCommentsOfArticle(Long id);
 
-    R likeComment(Long id);
+    void likeComment(Long id);
 
     List<ChildrenCommentVo> getChildrenOfRoot(Long id);
 }

@@ -1,7 +1,8 @@
 package org.example.antares.common.model.enums;
 
-import org.apache.commons.lang3.StringUtils;
+import lombok.Getter;
 
+@Getter
 public enum AppHttpCodeEnum {
     // 成功
     SUCCESS(200,"操作成功"),
@@ -39,20 +40,12 @@ public enum AppHttpCodeEnum {
         this.msg = errorMessage;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
     public static AppHttpCodeEnum getEnumByCode(int code) {
         for (AppHttpCodeEnum appHttpCodeEnum : AppHttpCodeEnum.values()) {
             if (appHttpCodeEnum.code == code) {
                 return appHttpCodeEnum;
             }
         }
-        return null;
+        return AppHttpCodeEnum.INTERNAL_SERVER_ERROR;
     }
 }

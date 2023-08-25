@@ -26,7 +26,7 @@ public class ChatMessageController {
      * @return
      */
     @PostMapping("/list/page/vo")
-    public R listMessageVoByPage(@RequestBody MessageQueryRequest messageQueryRequest,
+    public R<Page<MessageVo>> listMessageVoByPage(@RequestBody MessageQueryRequest messageQueryRequest,
                                       HttpServletRequest request) {
         Page<MessageVo> page = chatMessageService.listMessageVoByPage(messageQueryRequest, request);
         return R.ok(page);

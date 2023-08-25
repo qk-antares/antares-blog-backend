@@ -16,5 +16,6 @@
         <module>antares-gateway</module>
         <module>antares-blog</module>
         <module>antares-search</module>
+        <module>antares-oj</module>
     </modules>
 </project>

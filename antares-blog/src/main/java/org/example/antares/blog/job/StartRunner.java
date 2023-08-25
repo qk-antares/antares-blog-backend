@@ -23,6 +23,11 @@ import java.util.stream.Collectors;
 
 import static org.example.antares.common.constant.RedisConstants.*;
 
+/**
+ * @author Antares
+ * @date 2023/8/24 15:34
+ * @description 启动将标签加载到redis
+ */
 //@Component
 @Slf4j
 public class StartRunner implements CommandLineRunner {

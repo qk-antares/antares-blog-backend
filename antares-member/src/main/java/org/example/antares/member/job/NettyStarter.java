@@ -36,7 +36,6 @@ public class NettyStarter implements CommandLineRunner {
 
     public static final Map<Long, MutablePair<Channel, Long>> USERS = new ConcurrentHashMap<>(1024);
 
-
     @Override
     public void run(String... args) throws InterruptedException {
         NioEventLoopGroup boss = new NioEventLoopGroup();

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 */
 public interface ArticleLikeService extends IService<ArticleLike> {
 
-    R likeBlog(Long id, HttpServletRequest request);
+    void likeBlog(Long id, HttpServletRequest request);
 
     void likeBlog(Long uid, Long articleId, Long authorId);
 }

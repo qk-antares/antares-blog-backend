@@ -2,7 +2,6 @@ package org.example.antares.blog.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.antares.blog.model.dto.star.StarBookQueryRequest;
-import org.example.antares.blog.model.vo.article.ArticleStarVo;
 import org.example.antares.blog.model.vo.article.ArticleVo;
 import org.example.antares.blog.model.vo.star.StarBookBoolVo;
 import org.example.antares.blog.service.StarBookService;
@@ -27,7 +26,7 @@ public class StarBookController {
      * @return
      */
     @GetMapping("/{articleId}")
-    public R getStarBooks(@PathVariable("articleId")Long articleId, HttpServletRequest request){
+    public R<List<StarBookBoolVo>> getStarBooks(@PathVariable("articleId")Long articleId, HttpServletRequest request){
         List<StarBookBoolVo> vos = starBookService.getStarBooks(articleId, request);
         return R.ok(vos);
     }
@@ -37,7 +36,7 @@ public class StarBookController {
      * @return
      */
     @GetMapping("/of/{uid}")
-    public R getStarBooksByUid(@PathVariable("uid")Long uid){
+    public R<List<StarBookBoolVo>> getStarBooksByUid(@PathVariable("uid")Long uid){
         List<StarBookBoolVo> vos = starBookService.getStarBooksByUid(uid);
         return R.ok(vos);
     }
@@ -49,8 +48,9 @@ public class StarBookController {
      * @return
      */
     @PostMapping
-    public R createStarBook(@RequestParam("name") String name, HttpServletRequest request){
-        return starBookService.createStarBook(name, request);
+    public R<Long> createStarBook(@RequestParam("name") String name, HttpServletRequest request){
+        Long starBookId = starBookService.createStarBook(name, request);
+        return R.ok(starBookId);
     }
 
     /**
@@ -59,7 +59,7 @@ public class StarBookController {
      * @return
      */
     @PostMapping("/articles")
-    public R getArticlesInStarBook(@RequestBody StarBookQueryRequest starBookQueryRequest){
+    public R<Page<ArticleVo>> getArticlesInStarBook(@RequestBody StarBookQueryRequest starBookQueryRequest){
         Page<ArticleVo> vos = starBookService.getArticlesInStarBook(starBookQueryRequest);
         return R.ok(vos);
     }

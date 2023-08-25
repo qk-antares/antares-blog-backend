@@ -2,10 +2,10 @@ package org.example.antares.blog.feign;
 
 import org.example.antares.common.model.dto.UsernameAndAvtarDto;
 import org.example.antares.common.model.response.R;
+import org.example.antares.common.model.vo.UserInfoVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface UserFeignService {
      * @return
      */
     @GetMapping("/member/info/{uid}")
-    R info(@PathVariable("uid") Long uid);
+    R<UserInfoVo> info(@PathVariable("uid") Long uid);
 
     /**
      * 获取当前用户关注的所有用户的id

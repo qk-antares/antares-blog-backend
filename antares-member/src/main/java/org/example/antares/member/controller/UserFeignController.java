@@ -1,11 +1,7 @@
 package org.example.antares.member.controller;
 
 import org.example.antares.common.model.dto.UsernameAndAvtarDto;
-import org.example.antares.common.model.response.R;
 import org.example.antares.common.model.vo.UserInfoVo;
-import org.example.antares.common.utils.BeanCopyUtils;
-import org.example.antares.member.model.entity.User;
-import org.example.antares.member.service.ChatMessageService;
 import org.example.antares.member.service.ConversationService;
 import org.example.antares.member.service.FollowService;
 import org.example.antares.member.service.UserService;
@@ -13,10 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/member")
@@ -30,14 +24,12 @@ public class UserFeignController {
 
     @PostMapping("/list/username/avatar")
     public List<UsernameAndAvtarDto> getUsernameAndAvatarByUids(@RequestBody Collection<Long> uids){
-        List<UsernameAndAvtarDto> dtos = userService.listUserNameAndAvatarByUids(uids);
-        return dtos;
+        return userService.listUserNameAndAvatarByUids(uids);
     }
 
     @GetMapping("/{uid}/username/avatar")
     public UsernameAndAvtarDto getUsernameAndAvatar(@PathVariable("uid") Long uid){
-        UsernameAndAvtarDto dto = userService.getUsernameAndAvatar(uid);
-        return dto;
+        return userService.getUsernameAndAvatar(uid);
     }
 
     @GetMapping("/followIds/of/current")

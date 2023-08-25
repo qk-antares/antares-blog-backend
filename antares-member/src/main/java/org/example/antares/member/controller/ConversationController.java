@@ -23,7 +23,7 @@ public class ConversationController {
      * @return
      */
     @PostMapping("/list/page/vo")
-    public R listConversationVoByPage(@RequestBody PageRequest pageRequest,
+    public R<Page<ConversationVo>> listConversationVoByPage(@RequestBody PageRequest pageRequest,
                                  HttpServletRequest request) {
         Page<ConversationVo> page = conversationService.listConversationVoByPage(pageRequest, request);
         return R.ok(page);
@@ -36,9 +36,9 @@ public class ConversationController {
      * @return
      */
     @GetMapping("/{targetUid}")
-    public R getConversationByTargetUid(@PathVariable("targetUid") Long targetUid,
+    public R<ConversationVo> getConversationByTargetUid(@PathVariable("targetUid") Long targetUid,
                                       HttpServletRequest request) {
-        ConversationVo page = conversationService.getConversationByTargetUid(targetUid, request);
-        return R.ok(page);
+        ConversationVo vo = conversationService.getConversationByTargetUid(targetUid, request);
+        return R.ok(vo);
     }
 }

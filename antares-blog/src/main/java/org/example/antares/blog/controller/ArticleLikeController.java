@@ -24,6 +24,7 @@ public class ArticleLikeController {
      */
     @PostMapping("/article/{id}/like")
     public R likeBlog(@PathVariable("id") Long id, HttpServletRequest request){
-        return articleLikeService.likeBlog(id, request);
+        articleLikeService.likeBlog(id, request);
+        return R.ok();
     }
 }

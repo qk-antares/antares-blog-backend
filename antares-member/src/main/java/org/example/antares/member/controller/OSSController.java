@@ -2,6 +2,8 @@ package org.example.antares.member.controller;
 
 import com.qiniu.util.Auth;
 import lombok.Data;
+import org.example.antares.common.exception.BusinessException;
+import org.example.antares.common.model.enums.AppHttpCodeEnum;
 import org.example.antares.common.model.response.R;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +30,7 @@ public class OSSController {
     private String domain;
 
     @GetMapping("/policy")
-    public R policy(){
+    public R<Map<String, Object>> policy(){
         Map<String, Object> result = new HashMap<String, Object>();
         try {
             //验证七牛云身份是否通过
@@ -44,11 +46,9 @@ public class OSSController {
             result.put("dir", dir);
 
             result.put("success", 1);
+            return R.ok(result);
         } catch (Exception e) {
-            result.put("message", "获取凭证失败，"+e.getMessage());
-            result.put("success", 0);
-        } finally {
-            return R.ok().put("data", result);
+            throw new BusinessException(AppHttpCodeEnum.INTERNAL_SERVER_ERROR, "获取凭证失败，"+e.getMessage());
         }
     }
 }

@@ -29,6 +29,11 @@ public class User implements Serializable {
     private String password;
 
     /**
+     * 用户角色
+     */
+    private String userRole;
+
+    /**
      * 用户标签
      */
     private String tags;

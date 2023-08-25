@@ -23,7 +23,7 @@ import java.util.Map;
 @Controller
 @Data
 @RequestMapping(value = "/member/oauth2.0")
-@ConfigurationProperties(prefix = "antares.third-party.oauth.gitee")
+@ConfigurationProperties(prefix = "antares.third-party.oauth.gite")
 public class OAuth2Controller {
     @Resource
     private UserService userService;
@@ -59,8 +59,8 @@ public class OAuth2Controller {
 
             //第一次使用社交帐号登录自动注册（在远程调用方法中已经将token保存至redis中）
             userService.oauthLogin(socialUser, response);
-            return "redirect:http://antares.cool:8000/home";
+            return "redirect:http://blog.antares.cool/note";
         }
-        return "redirect:http://antares.cool:8000/user/register";
+        return "redirect:http://blog.antares.cool/user/register";
     }
 }

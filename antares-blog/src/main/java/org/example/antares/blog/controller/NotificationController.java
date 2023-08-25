@@ -2,14 +2,15 @@ package org.example.antares.blog.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.example.antares.blog.model.dto.notification.NotificationQueryRequest;
+import org.example.antares.blog.model.vo.notification.CommentNotificationVo;
+import org.example.antares.blog.model.vo.notification.LikeNotificationVo;
+import org.example.antares.blog.model.vo.notification.NotificationCountVo;
 import org.example.antares.blog.service.NotificationService;
 import org.example.antares.common.model.response.R;
-import org.example.antares.blog.model.vo.notification.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 @RequestMapping("/blog/notification")
@@ -23,7 +24,7 @@ public class NotificationController {
      * @return
      */
     @GetMapping("/count")
-    public R getNoticeCount(HttpServletRequest request){
+    public R<NotificationCountVo> getNoticeCount(HttpServletRequest request){
         NotificationCountVo notificationCountVo = notificationService.count(request);
         return R.ok(notificationCountVo);
     }
@@ -41,7 +42,7 @@ public class NotificationController {
      * @return
      */
     @PostMapping("/like")
-    public R listLikeNotificationByPage(@RequestBody NotificationQueryRequest notificationQueryRequest,
+    public R<Page<LikeNotificationVo>> listLikeNotificationByPage(@RequestBody NotificationQueryRequest notificationQueryRequest,
                                     HttpServletRequest request){
         Page<LikeNotificationVo> page = notificationService.listLikeNotificationByPage(notificationQueryRequest, request);
         return R.ok(page);
@@ -54,7 +55,7 @@ public class NotificationController {
      * @return
      */
     @PostMapping("/comment")
-    public R listCommentNotificationByPage(@RequestBody NotificationQueryRequest notificationQueryRequest,
+    public R<Page<CommentNotificationVo>> listCommentNotificationByPage(@RequestBody NotificationQueryRequest notificationQueryRequest,
                                     HttpServletRequest request){
         Page<CommentNotificationVo> vos = notificationService.listCommentNotificationByPage(notificationQueryRequest, request);
         return R.ok(vos);

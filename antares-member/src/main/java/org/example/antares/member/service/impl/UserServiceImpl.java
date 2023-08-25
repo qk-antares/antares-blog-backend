@@ -80,7 +80,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private RabbitTemplate rabbitTemplate;
 
     @Override
-    public R sendCode(String dest, int type) {
+    public void sendCode(String dest, int type) {
         String redisCodeKey = (type == PHONE_CODE ? RedisConstants.CODE_SMS_CACHE_PREFIX : RedisConstants.MAIL_CODE_CACHE_PREFIX) + dest;
         String redisCode = stringRedisTemplate.opsForValue().get(redisCodeKey);
         //1、接口防刷
@@ -112,11 +112,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     new String[]{"mail", dest, codeNum},
                     new CorrelationData(UUID.randomUUID().toString()));
         }
-        return R.ok();
     }
 
     @Override
-    public R register(UserRegisterRequest userRegisterRequest) {
+    public void register(UserRegisterRequest userRegisterRequest) {
         //1、效验验证码
         String code = userRegisterRequest.getCaptcha();
 
@@ -142,13 +141,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             baseMapper.insert(user);
             user.setUsername(USERNAME_PREFIX + user.getUid());
             baseMapper.updateById(user);
-            return R.ok();
         }
         throw new BusinessException(AppHttpCodeEnum.WRONG_CODE);
     }
 
     @Override
-    public R login(AccountLoginRequest accountLoginRequest, HttpServletResponse response) {
+    public void login(AccountLoginRequest accountLoginRequest, HttpServletResponse response) {
         String account = accountLoginRequest.getAccount();
         String password = accountLoginRequest.getPassword();
 
@@ -169,7 +167,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 //登录成功
                 UserInfoVo userInfoVo = userToVo(user, null);
                 generateTokenAndCookie(userInfoVo, response);
-                return R.ok();
             } else {
                 throw new BusinessException(AppHttpCodeEnum.WRONG_PASSWORD);
             }
@@ -348,7 +345,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public R loginByPhone(PhoneLoginRequest vo, HttpServletResponse response) {
+    public void loginByPhone(PhoneLoginRequest vo, HttpServletResponse response) {
         //到这里参数校验已经通过
         //从redis中读取验证码
         String cacheKey = RedisConstants.CODE_SMS_CACHE_PREFIX + vo.getPhone();
@@ -371,7 +368,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 //手机号已经存在，则正常登录
                 generateTokenAndCookie(userToVo(result, null), response);
             }
-            return R.ok();
         } else {
             throw new BusinessException(AppHttpCodeEnum.WRONG_CODE);
         }
@@ -379,8 +375,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public UserInfoVo getUserByUid(Long uid, HttpServletRequest request) {
-        log.info(request.getSession().getId());
-
         //todo: 异步编排优化，同时获取当前用户信息和目标用户信息
         User byId = getById(uid);
         if(byId == null){
@@ -389,8 +383,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         UserInfoVo currentUser = redisUtils.getCurrentUser(request);
 
-        UserInfoVo userInfoVo = userToVo(byId, currentUser);
-        return userInfoVo;
+        return userToVo(byId, currentUser);
     }
 
     @Override
@@ -555,12 +548,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 result.put(recommendUser.getUid().toString(), score);
             });
         }
-        long start = System.currentTimeMillis();
 
         //将其缓存到redis中（只缓存id，因为考虑到这个数量极大）
         cacheRecommendUids(uid, result);
-
-        long end = System.currentTimeMillis();
 
         return result;
     }

@@ -21,7 +21,7 @@ public interface StarBookService extends IService<StarBook> {
 
     List<StarBookBoolVo> getStarBooks(Long articleId, HttpServletRequest request);
 
-    R createStarBook(String name, HttpServletRequest request);
+    Long createStarBook(String name, HttpServletRequest request);
 
     Page<ArticleVo> getArticlesInStarBook(StarBookQueryRequest starBookQueryRequest);
 

@@ -15,9 +15,9 @@ import org.example.antares.blog.model.entity.ArticleComment;
 import org.example.antares.blog.service.ArticleCommentService;
 import org.example.antares.blog.utils.RedisUtils;
 import org.example.antares.common.constant.RedisConstants;
+import org.example.antares.common.exception.BusinessException;
 import org.example.antares.common.model.dto.UsernameAndAvtarDto;
 import org.example.antares.common.model.enums.AppHttpCodeEnum;
-import org.example.antares.common.model.response.R;
 import org.example.antares.common.model.vo.UserInfoVo;
 import org.example.antares.common.utils.BeanCopyUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -55,14 +55,14 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
 
     @Override
     @Transactional
-    public R publishComment(PostCommentRequest postCommentRequest, HttpServletRequest request) {
+    public void publishComment(PostCommentRequest postCommentRequest, HttpServletRequest request) {
         UserInfoVo currentUser = redisUtils.getCurrentUserWithValidation(request);
 
         //1.首先要查询文章是否存在
         Article article = articleMapper.selectOne(new LambdaQueryWrapper<Article>()
                 .select(Article::getCreatedBy).eq(Article::getId, postCommentRequest.getArticleId()));
         if(article == null){
-            return R.error(AppHttpCodeEnum.NOT_EXIST);
+            throw new BusinessException(AppHttpCodeEnum.NOT_EXIST);
         }
 
         ArticleComment comment = BeanCopyUtils.copyBean(postCommentRequest, ArticleComment.class);
@@ -107,7 +107,6 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
         }, threadPoolExecutor);
 
         CompletableFuture.allOf(saveFuture, countFuture, cacheFuture, notificationFuture).join();
-        return R.ok(comment.getId());
     }
 
     @Override
@@ -134,9 +133,7 @@ public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper,
     }
 
     @Override
-    public R likeComment(Long id) {
-
-        return null;
+    public void likeComment(Long id) {
     }
 
     @Override

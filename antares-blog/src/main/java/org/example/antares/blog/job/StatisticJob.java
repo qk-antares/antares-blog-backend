@@ -74,8 +74,6 @@ public class StatisticJob {
         RLock lock = redissonClient.getLock(RedisConstants.ASYNC_SCORE_LOCK);
         try {
             if (lock.tryLock(0, 30, TimeUnit.SECONDS)) {
-                long start = System.currentTimeMillis();
-
                 //首先获取所有文章(只获取id，score，hot)
                 List<Article> articles = articleService.lambdaQuery()
                         .select(Article::getViewCount, Article::getLikeCount, Article::getStarCount, Article::getCommentCount,
@@ -94,9 +92,6 @@ public class StatisticJob {
                 //将hot前10的文章缓存起来
                 List<Article> hots = articleService.lambdaQuery().orderBy(true, false, Article::getHot).last("limit 8").list();
                 stringRedisTemplate.opsForValue().set(RedisConstants.HOT_ARTICLES, ObjectMapperUtils.writeValueAsString(hots));
-
-                long end = System.currentTimeMillis();
-                log.info("更新score和hot任务总耗时：", end - start);
             }
         } catch (InterruptedException e) {
             log.error(e.getMessage());

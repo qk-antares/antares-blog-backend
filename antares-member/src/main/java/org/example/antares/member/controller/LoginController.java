@@ -40,7 +40,8 @@ public class LoginController {
     @GetMapping(value = "/sms/sendCode")
     public R sendCode(@Pattern(regexp = "^[1]([3-9])[0-9]{9}$", message = "手机号格式不正确") @RequestParam("phone") String phone) {
         //如果有错误回到注册页面
-        return userService.sendCode(phone, PHONE_CODE);
+        userService.sendCode(phone, PHONE_CODE);
+        return R.ok();
     }
 
     /**
@@ -50,7 +51,8 @@ public class LoginController {
      */
     @GetMapping(value = "/email/sendCode")
     public R sendMail(@Email @RequestParam("email") String email) {
-        return userService.sendCode(email, MAIL_CODE);
+        userService.sendCode(email, MAIL_CODE);
+        return R.ok();
     }
 
     /**
@@ -60,7 +62,8 @@ public class LoginController {
      */
     @PostMapping(value = "/register")
     public R register(@Valid @RequestBody UserRegisterRequest userRegisterRequest) {
-        return userService.register(userRegisterRequest);
+        userService.register(userRegisterRequest);
+        return R.ok();
     }
 
     /**
@@ -71,7 +74,8 @@ public class LoginController {
      */
     @PostMapping(value = "/login")
     public R login(@RequestBody AccountLoginRequest accountLoginRequest, HttpServletResponse response) {
-        return userService.login(accountLoginRequest, response);
+        userService.login(accountLoginRequest, response);
+        return R.ok();
     }
 
     /**
@@ -82,7 +86,8 @@ public class LoginController {
      */
     @PostMapping(value = "/loginByPhone")
     public R loginByPhone(@Valid @RequestBody PhoneLoginRequest phoneLoginRequest, HttpServletResponse response) {
-        return userService.loginByPhone(phoneLoginRequest, response);
+        userService.loginByPhone(phoneLoginRequest, response);
+        return R.ok();
     }
 
 

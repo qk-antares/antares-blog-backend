@@ -3,9 +3,11 @@ package org.example.antares.blog.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.example.antares.blog.model.dto.tag.ArticleTagAddRequest;
 import org.example.antares.blog.model.entity.ArticleTag;
-import org.example.antares.common.model.response.R;
+import org.example.antares.blog.model.vo.tag.ArticleTagCategoryVo;
+import org.example.antares.blog.model.vo.tag.ArticleTagVo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
 * @author Antares
@@ -13,6 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 * @createDate 2023-03-24 20:40:13
 */
 public interface ArticleTagService extends IService<ArticleTag> {
-    R getAllTags();
-    R addATag(ArticleTagAddRequest articleTagAddRequest, HttpServletRequest request);
+    List<ArticleTagCategoryVo> getAllTags();
+    ArticleTagVo addATag(ArticleTagAddRequest articleTagAddRequest, HttpServletRequest request);
 }

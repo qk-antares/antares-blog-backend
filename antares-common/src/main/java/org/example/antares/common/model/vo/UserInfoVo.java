@@ -8,6 +8,7 @@ import java.util.List;
 public class UserInfoVo {
     private Long uid;
     private String username;
+    private String userRole;
     private List<UserTagVo> tags;
     private String signature;
     private String email;

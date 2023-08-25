@@ -29,19 +29,19 @@ public class FollowController {
     }
 
     @GetMapping("/follows/of/current")
-    public R getFollowsOfCurrent(HttpServletRequest request){
+    public R<List<FollowVo>> getFollowsOfCurrent(HttpServletRequest request){
         List<FollowVo> follows = followService.getFollowsOfCurrent(request);
         return R.ok(follows);
     }
 
     @GetMapping("/follows/of/{uid}")
-    public R getFollowsByUid(@PathVariable("uid") Long uid, HttpServletRequest request){
+    public R<List<UserInfoVo>> getFollowsByUid(@PathVariable("uid") Long uid, HttpServletRequest request){
         List<UserInfoVo> follows = followService.getFollowsByUid(uid, request);
         return R.ok(follows);
     }
 
     @GetMapping("/fans/of/{uid}")
-    public R getFansByUid(@PathVariable("uid") Long uid, HttpServletRequest request){
+    public R<List<UserInfoVo>> getFansByUid(@PathVariable("uid") Long uid, HttpServletRequest request){
         List<UserInfoVo> fans = followService.getFansByUid(uid, request);
         return R.ok(fans);
     }

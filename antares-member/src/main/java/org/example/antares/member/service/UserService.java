@@ -25,9 +25,9 @@ import java.util.Map;
  * @date 2023-03-02 00:19:13
  */
 public interface UserService extends IService<User> {
-    R sendCode(String dest, int type);
+    void sendCode(String dest, int type);
 
-    R register(UserRegisterRequest userRegisterRequest);
+    void register(UserRegisterRequest userRegisterRequest);
 
     void checkPhoneUnique(String phone) throws BusinessException;
 
@@ -35,7 +35,7 @@ public interface UserService extends IService<User> {
 
     void checkEmailUnique(String email) throws BusinessException;
 
-    R login(AccountLoginRequest accountLoginRequest, HttpServletResponse response);
+    void login(AccountLoginRequest accountLoginRequest, HttpServletResponse response);
 
     void oauthLogin(SocialUser socialUser, HttpServletResponse response) throws IOException;
 
@@ -49,7 +49,7 @@ public interface UserService extends IService<User> {
 
     void updateMail(String mail, String code, HttpServletRequest request);
 
-    R loginByPhone(PhoneLoginRequest vo, HttpServletResponse response);
+    void loginByPhone(PhoneLoginRequest vo, HttpServletResponse response);
 
     UserInfoVo getUserByUid(Long uid, HttpServletRequest request);
 

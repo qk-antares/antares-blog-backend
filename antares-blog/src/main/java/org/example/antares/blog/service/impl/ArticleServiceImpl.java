@@ -78,7 +78,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     private ThreadPoolExecutor childThreadPoolExecutor;
 
     @Override
-    public R createDraft(ArticleCreateRequest articleCreateRequest, HttpServletRequest request) {
+    public Long createDraft(ArticleCreateRequest articleCreateRequest, HttpServletRequest request) {
         //todo: 消息队列优化（能否待考究）
         UserInfoVo currentUser = redisUtils.getCurrentUserWithValidation(request);
 
@@ -90,7 +90,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             article.setThumbnail1(articleCreateRequest.getThumbnails()[0]);
             article.setThumbnail2(articleCreateRequest.getThumbnails()[1]);
             article.setThumbnail3(articleCreateRequest.getThumbnails()[2]);
-        } catch (IndexOutOfBoundsException e){}
+        } catch (IndexOutOfBoundsException ignored){}
         //先把文章除标签之外的信息存进数据库
         save(article);
         //存储该文章涉及的标签
@@ -101,18 +101,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             return articleTagRelation;
         }).collect(Collectors.toList());
         articleTagRelationService.saveBatch(relations);
-        return R.ok(article.getId());
+        return article.getId();
     }
 
     @Override
-    public R getArticleCoverById(Long id, HttpServletRequest request) {
+    public ArticleVo getArticleCoverById(Long id, HttpServletRequest request) {
         //查询除了内容之外的信息
         Article article = lambdaQuery()
                 .select(Article.class, item -> !item.getColumn().equals("content"))
                 .eq(Article::getId, id).one();
         //文章不存在
         if(article == null){
-            return R.error(AppHttpCodeEnum.NOT_EXIST);
+            throw new BusinessException(AppHttpCodeEnum.NOT_EXIST);
         }
 
         UserInfoVo currentUser = redisUtils.getCurrentUser(request);
@@ -133,31 +133,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
                 //2.查询点赞
                 vo.setIsLiked(stringRedisTemplate.opsForSet()
                         .isMember(likeCacheKey, currentUser.getUid().toString()));
-                //Set<String> uids = articleLikeMapper.selectList(new LambdaQueryWrapper<ArticleLike>()
-                //                .select(ArticleLike::getUid).eq(ArticleLike::getArticleId, id))
-                //        .stream().map(articleLike -> articleLike.getUid().toString()).collect(Collectors.toSet());
-                //if(!uids.isEmpty()){
-                //    stringRedisTemplate.opsForSet().add(likeCacheKey, uids.toArray(new String[0]));
-                //}
                 //3.查询收藏
                 vo.setIsStared(stringRedisTemplate.opsForSet()
                         .isMember(starCacheKey, currentUser.getUid().toString()));
-                /*
-                Set<String> ownerIds = articleStarMapper.selectList(new QueryWrapper<ArticleStar>()
-                                .select("DISTINCT uid").lambda().eq(ArticleStar::getArticleId, id))
-                        .stream().map(articleStar -> articleStar.getUid().toString()).collect(Collectors.toSet());
-                if(!CollectionUtils.isEmpty(ownerIds)){
-                    stringRedisTemplate.opsForSet().add(starCacheKey, ownerIds.toArray(new String[0]));
-                }
-                6.设置是否点赞和收藏
-                if(currentUser != null){
-                    String uid = currentUser.getUid().toString();
-                    vo.setIsLiked(uids.contains(uid));
-                    vo.setIsStared(ownerIds.contains(uid));
-                }
-                */
             }
-            return R.ok(vo);
+            return vo;
         } catch (JsonProcessingException e) {
             throw new BusinessException(AppHttpCodeEnum.INTERNAL_SERVER_ERROR, "JSON转换异常");
         }
@@ -187,13 +167,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
 
     @Override
     @Transactional
-    public R updateBasicById(Long id, ArticleCreateRequest articleCreateRequest,
+    public void updateBasicById(Long id, ArticleCreateRequest articleCreateRequest,
                              HttpServletRequest request) {
         //查询当前用户是否是作者
         UserInfoVo currentUser = redisUtils.getCurrentUserWithValidation(request);
         Long createdBy = lambdaQuery().select(Article::getCreatedBy).eq(Article::getId, id).one().getCreatedBy();
         if(!currentUser.getUid().equals(createdBy)){
-            return R.error(AppHttpCodeEnum.NO_AUTH);
+            throw new BusinessException(AppHttpCodeEnum.NO_AUTH);
         }
 
         //todo: （优先级极高）异步编排优化
@@ -222,7 +202,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         //查询当前文章的标签
         Set<Long> curTagIds = articleTagRelationService.lambdaQuery().select(ArticleTagRelation::getTagId)
                 .eq(ArticleTagRelation::getArticleId, id).list()
-                .stream().map(articleTagRelation -> articleTagRelation.getTagId()).collect(Collectors.toSet());
+                .stream().map(ArticleTagRelation::getTagId).collect(Collectors.toSet());
         //要更新的文章标签
         HashSet<Long> updateTagIds = new HashSet<>(articleCreateRequest.getTags());
 
@@ -246,12 +226,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
 
         //3. 将其从redis缓存中删除
         deleteCoverCache(id);
-
-        return R.ok();
     }
 
     @Override
-    public R getArticleContentById(Long id) {
+    public ArticleContentVo getArticleContentById(Long id) {
         Article article = lambdaQuery().select(Article::getContent).eq(Article::getId, id).one();
         if(article != null){
             ArticleContentVo vo = new ArticleContentVo(article.getContent());
@@ -259,24 +237,23 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
                 String contentCacheKey = ARTICLE_CONTENT_PREFIX + id + ARTICLE_CONTENT_SUFFIX;
                 stringRedisTemplate.opsForValue().set(contentCacheKey,
                         MAPPER.writeValueAsString(vo), ARTICLE_TTL, TimeUnit.HOURS);
-                return R.ok(vo);
+                return vo;
             } catch (JsonProcessingException e) {
                 throw new BusinessException(AppHttpCodeEnum.INTERNAL_SERVER_ERROR);
             }
         }
-        return R.error(AppHttpCodeEnum.NOT_EXIST);
+        throw new BusinessException(AppHttpCodeEnum.NOT_EXIST);
     }
 
     @Override
-    public R updateContentById(Long id, String content, HttpServletRequest request) {
+    public void updateContentById(Long id, String content, HttpServletRequest request) {
         //todo: 消息队列优化
         //1.首先判断当前用户有没有权限
         Article article = getById(id);
         UserInfoVo userInfoVo = redisUtils.getCurrentUserWithValidation(request);
         if(!article.getCreatedBy().equals(userInfoVo.getUid())){
-            return R.error(AppHttpCodeEnum.NO_AUTH);
+            throw new BusinessException(AppHttpCodeEnum.NO_AUTH);
         }
-        //Todo: 异步编排优化
         //2.更新文章内容
         Article updateArticle = new Article();
         updateArticle.setId(id);
@@ -286,8 +263,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         updateById(updateArticle);
         //3.文章内容更新，要将其从redis中删除
         deleteContentCache(id);
-
-        return R.ok();
     }
 
     @Override
@@ -320,7 +295,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     }
 
     @Override
-    public R getArticlesByUid(ArticleQueryRequest articleQueryRequest, HttpServletRequest request) {
+    public Page<ArticleVo> getArticlesByUid(ArticleQueryRequest articleQueryRequest, HttpServletRequest request) {
         UserInfoVo currentUser = redisUtils.getCurrentUser(request);
         Long uid = currentUser == null ? null : currentUser.getUid();
 
@@ -347,7 +322,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
         List<ArticleVo> articleVos = articlesToVos(page.getRecords(), uid);
         Page<ArticleVo> vosPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
         vosPage.setRecords(articleVos);
-        return R.ok(vosPage);
+        return vosPage;
     }
 
     @Override
@@ -361,7 +336,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     }
 
     @Override
-    public R listArticleVoByPage(ArticleQueryRequest articleQueryRequest, HttpServletRequest request) {
+    public Page<ArticleVo> listArticleVoByPage(ArticleQueryRequest articleQueryRequest, HttpServletRequest request) {
         UserInfoVo currentUser = redisUtils.getCurrentUser(request);
 
         int pageNum = articleQueryRequest.getPageNum();
@@ -378,15 +353,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
                 .orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC), sortField);
 
         //2. 查询数据库中的信息
-        long start = System.currentTimeMillis();
         Page<Article> articlePage = page(new Page<>(pageNum, pageSize), queryWrapper);
-        long end = System.currentTimeMillis();
 
         //3. 转换为vos
         List<ArticleVo> articleVos = articlesToVos(articlePage.getRecords(), currentUser == null ? null : currentUser.getUid());
         Page<ArticleVo> articleVoPage = new Page<>(articleQueryRequest.getPageNum(), articleQueryRequest.getPageSize(), articlePage.getTotal());
         articleVoPage.setRecords(articleVos);
-        return R.ok(articleVoPage);
+        return articleVoPage;
     }
 
     @Override
@@ -471,7 +444,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
      * @return
      */
     private ArticleVo articleToVo(Article article, boolean incrViewCount){
-        long start = System.currentTimeMillis();
         //复制基本的属性
         ArticleVo vo = BeanCopyUtils.copyBean(article, ArticleVo.class);
         //设置缩略图
@@ -518,7 +490,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             throw new BusinessException(AppHttpCodeEnum.INTERNAL_SERVER_ERROR);
         }
 
-        long end = System.currentTimeMillis();
         return vo;
     }
 
