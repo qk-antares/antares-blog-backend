@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.example.antares.member.mapper.UserMapper">
+<mapper namespace="com.antares.member.mapper.UserMapper">
 
-    <resultMap id="BaseResultMap" type="org.example.antares.member.model.entity.User">
+    <resultMap id="BaseResultMap" type="com.antares.member.model.entity.User">
             <id property="uid" column="uid" jdbcType="BIGINT"/>
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
@@ -34,7 +34,7 @@
         create_time,update_time,is_delete
     </sql>
 
-    <select id="getRandomRecommend" resultType="org.example.antares.member.model.entity.User">
+    <select id="getRandomRecommend" resultType="com.antares.member.model.entity.User">
         select uid,tags
         from user as r1 join
             (select FLOOR(RAND() * (select MAX(uid) from user)) as id) as r2
@@ -43,7 +43,7 @@
               r1.uid not in (select follow.follow_uid from follow where follow.uid = #{uid})
         order by r1.uid LIMIT #{count};
     </select>
-    <select id="getRandom" resultType="org.example.antares.member.model.entity.User">
+    <select id="getRandom" resultType="com.antares.member.model.entity.User">
         select uid,tags
         from user as r1 join
                  (select FLOOR(RAND() * (select MAX(uid) from user)) as id) as r2

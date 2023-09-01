@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.example.antares.blog.mapper.ArticleTagMapper">
+<mapper namespace="com.antares.blog.mapper.ArticleTagMapper">
 
-    <resultMap id="BaseResultMap" type="org.example.antares.blog.model.entity.ArticleTag">
+    <resultMap id="BaseResultMap" type="com.antares.blog.model.entity.ArticleTag">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
             <result property="createdBy" column="created_by" jdbcType="BIGINT"/>

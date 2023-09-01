@@ -1,4 +1,0 @@
-POST http://antares.cool/api/member/update
-Content-Type: application/json
-
-###

@@ -1,9 +1,0 @@
-POST http://antares.cool/api/member/login
-Content-Type: application/json
-
-{
-  "account": "1716607668@qq.com",
-  "password": "123456"
-}
-
-###

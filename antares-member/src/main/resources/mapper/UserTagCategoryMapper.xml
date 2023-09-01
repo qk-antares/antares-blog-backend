@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="generator.mapper.UserTagCategoryMapper">
+<mapper namespace="com.antares.member.mapper.UserTagCategoryMapper">
 
-    <resultMap id="BaseResultMap" type="org.example.antares.member.model.entity.UserTagCategory">
+    <resultMap id="BaseResultMap" type="com.antares.member.model.entity.UserTagCategory">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>

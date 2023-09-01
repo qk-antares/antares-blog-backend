@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.example.antares.member.mapper.ConversationMapper">
+<mapper namespace="com.antares.member.mapper.ConversationMapper">
 
-    <resultMap id="BaseResultMap" type="org.example.antares.member.model.entity.Conversation">
+    <resultMap id="BaseResultMap" type="com.antares.member.model.entity.Conversation">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="fromUid" column="from_uid" jdbcType="BIGINT"/>
             <result property="toUid" column="to_uid" jdbcType="BIGINT"/>
