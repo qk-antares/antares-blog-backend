@@ -12,7 +12,7 @@ import com.antares.blog.service.ArticleService;
 import com.antares.blog.service.ArticleTagRelationService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
-import org.example.antares.common.utils.CrawlerUtils;
+import com.antares.common.utils.CrawlerUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

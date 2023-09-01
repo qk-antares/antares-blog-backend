@@ -55,7 +55,7 @@ public class PostEsDaoTest {
         tags.add("java");
         tags.add("python");
         articleEsDTO.setTags(tags);
-        articleEsDTO.setCreatedBy("antares");
+        articleEsDTO.setUsername("流火Antares");
         articleEsDTO.setCreateTime(new Date());
         articleEsDTO.setUpdateTime(new Date());
 
@@ -80,7 +80,7 @@ public class PostEsDaoTest {
 
     @Test
     void testFindByCreatedBy() {
-        List<ArticleEsDTO> postEsDaoTestList = articleEsDao.findByCreatedBy(1L);
+        List<ArticleEsDTO> postEsDaoTestList = articleEsDao.findByUsername("流火Antares");
         System.out.println(postEsDaoTestList);
     }
 

@@ -2,7 +2,6 @@ package com.antares.blog;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.antares.blog.model.entity.Article;
-import org.example.antares.common.utils.BeanCopyUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.context.SpringBootTest;

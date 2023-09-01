@@ -12,8 +12,8 @@ import com.antares.search.model.entity.User;
 import com.antares.search.model.entity.UserTag;
 import com.antares.search.service.*;
 import lombok.extern.slf4j.Slf4j;
-import org.example.antares.common.utils.BeanCopyUtils;
-import org.example.antares.search.service.*;
+import com.antares.common.utils.BeanCopyUtils;
+import com.antares.search.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -62,7 +62,7 @@ public class FullSyncPostToEs {
 
             //查询文章的作者信息
             User user = userService.lambdaQuery().select(User::getUsername).eq(User::getUid, article.getCreatedBy()).one();
-            articleEsDTO.setCreatedBy(user.getUsername());
+            articleEsDTO.setUsername(user.getUsername());
 
             return articleEsDTO;
         }).collect(Collectors.toList());

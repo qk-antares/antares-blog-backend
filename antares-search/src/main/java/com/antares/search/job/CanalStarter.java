@@ -165,9 +165,9 @@ public class CanalStarter implements CommandLineRunner {
         dto.setSummary(columns.get(2).getValue());
         dto.setContent(columns.get(3).getValue());
         dto.setStatus(Integer.parseInt(columns.get(7).getValue()));
-        Long uid = userMapper.selectOne(new LambdaQueryWrapper<User>().select(User::getUsername)
-                .eq(User::getUid, Integer.parseInt(columns.get(16).getValue()))).getUid();
-        dto.setCreatedBy(uid);
+        String username = userMapper.selectOne(new LambdaQueryWrapper<User>().select(User::getUsername)
+                .eq(User::getUid, Integer.parseInt(columns.get(16).getValue()))).getUsername();
+        dto.setUsername(username);
         dto.setCreateTime(new Date(Long.parseLong(columns.get(19).getValue())));
         dto.setUpdateTime(new Date(Long.parseLong(columns.get(20).getValue())));
 

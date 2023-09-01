@@ -53,9 +53,9 @@ public class ArticleEsDTO implements Serializable {
     private List<String> tags;
 
     /**
-     * 创建用户 id
+     * 创建者用户名
      */
-    private Long createdBy;
+    private String username;
 
     /**
      * 创建时间

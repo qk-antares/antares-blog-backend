@@ -9,7 +9,7 @@ import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
  * 帖子 ES 操作
  */
 public interface ArticleEsDao extends ElasticsearchRepository<ArticleEsDTO, Long> {
-    List<ArticleEsDTO> findByCreatedBy(Long createdBy);
+    List<ArticleEsDTO> findByUsername(String username);
 
     List<ArticleEsDTO> findByTitle(String title);
 }

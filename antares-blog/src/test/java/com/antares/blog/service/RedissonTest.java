@@ -1,6 +1,6 @@
 package com.antares.blog.service;
 
-import org.example.antares.common.model.response.R;
+import com.antares.common.model.response.R;
 import org.junit.jupiter.api.Test;
 import org.redisson.api.RList;
 import org.redisson.api.RedissonClient;

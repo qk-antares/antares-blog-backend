@@ -1,9 +1,9 @@
 package com.antares.blog.feign;
 
-import org.example.antares.common.exception.BusinessException;
-import org.example.antares.common.model.enums.AppHttpCodeEnum;
-import org.example.antares.common.model.response.R;
-import org.example.antares.common.model.vo.UserInfoVo;
+import com.antares.common.exception.BusinessException;
+import com.antares.common.model.enums.AppHttpCodeEnum;
+import com.antares.common.model.response.R;
+import com.antares.common.model.vo.UserInfoVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
