@@ -1,4 +1,8 @@
-**# Antares博客系统
+# Antares博客系统
+
+在线访问：http://blog.antares.cool
+
+项目的部署使用的是自己搭建的服务器，使用IPv6+DDNS实现公网访问。如果你无法访问，可能是由于你的网络环境不支持IPv6（通常是公司内网和校园网），你可以到IPv6 测试 (test-ipv6.com)这个网站测试你是否支持IPv6，如果不支持可以连接手机热点后访问，手机网络一般支持IPv6
 
 ## 技术栈
 
@@ -188,4 +192,4 @@ header也提供了访问文件夹的方式（分页的）：
 
 利用Jsoup爬虫，可以获取站外搜索结果（博客园做了防爬虫处理，搜索要通过验证，然后返回cookie，该cookie有一定期限，所以爬虫不稳定）
 
-![image-20230530220413339](http://image.antares.cool/PicGo/image-20230530220413339.png)**
+![image-20230530220413339](http://image.antares.cool/PicGo/image-20230530220413339.png)

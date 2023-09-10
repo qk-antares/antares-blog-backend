@@ -1,5 +1,7 @@
 package com.antares.member.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -140,8 +142,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
             //保存数据
             baseMapper.insert(user);
-            user.setUsername(USERNAME_PREFIX + user.getUid());
-            baseMapper.updateById(user);
+
+            //设置用户名和AK/SK
+            User update = new User();
+            update.setUid(user.getUid());
+            update.setUsername(USERNAME_PREFIX + user.getUid());
+            update.setAccessKey(DigestUtil.sha1Hex(user.getUid() + RandomUtil.randomString(32)));
+            update.setSecretKey(DigestUtil.sha1Hex(user.getUid() + RandomUtil.randomString(32)));
+            baseMapper.updateById(update);
         }
         throw new BusinessException(AppHttpCodeEnum.WRONG_CODE);
     }

@@ -9,6 +9,8 @@
             <result property="username" column="username" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
+            <result property="accessKey" column="access_key" jdbcType="VARCHAR"/>
+            <result property="secretKey" column="secret_key" jdbcType="VARCHAR"/>
             <result property="tags" column="tags" jdbcType="VARCHAR"/>
             <result property="signature" column="signature" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
@@ -27,7 +29,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        uid,username,password,user_role
+        uid,username,password,user_role,access_key,secret_key,
         tags,signature,email,
         phone,sex,avatar,
         social_uid,access_token,expires_in,

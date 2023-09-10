@@ -33,6 +33,9 @@ public class User implements Serializable {
      */
     private String userRole;
 
+    private String accessKey;
+    private String secretKey;
+
     /**
      * 用户标签
      */

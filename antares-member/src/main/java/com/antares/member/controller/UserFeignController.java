@@ -2,9 +2,11 @@ package com.antares.member.controller;
 
 import com.antares.common.model.dto.UsernameAndAvtarDto;
 import com.antares.common.model.vo.UserInfoVo;
+import com.antares.member.model.entity.User;
 import com.antares.member.service.ConversationService;
 import com.antares.member.service.FollowService;
 import com.antares.member.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -52,5 +54,13 @@ public class UserFeignController {
     @PostMapping("/conversation/clear")
     public void clearConversationUnread(@RequestParam("uid") Long uid){
         conversationService.clearConversationUnread(uid);
+    }
+
+    @PostMapping("/secretKey")
+    public String getSecretKey(@RequestBody String accessKey){
+        return userService.getOne(new LambdaQueryWrapper<User>()
+                .select(User::getSecretKey).eq(User::getAccessKey, accessKey))
+                .getSecretKey();
+
     }
 }

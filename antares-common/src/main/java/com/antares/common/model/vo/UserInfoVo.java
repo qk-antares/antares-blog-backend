@@ -10,6 +10,8 @@ public class UserInfoVo implements Serializable {
     private Long uid;
     private String username;
     private String userRole;
+    private String accessKey;
+    private String secretKey;
     private List<UserTagVo> tags;
     private String signature;
     private String email;
