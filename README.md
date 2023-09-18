@@ -1,37 +1,53 @@
 # Antares博客系统
 
-在线访问：http://blog.antares.cool
+该项目是基于Spring Boot + Gateway + Redis + Elastic Search + Netty + RabbitMQ的编程博客分享平台，分为网关、用户、博客、搜索4个微服务。用户模块实现了标签系统和好友推荐、关注、私聊、消息通知等功能；博客模块实现了发布、推送、点赞、收藏、评论等功能；搜索模块实现了博客、用户和站外信息的聚合搜索。
 
-项目的部署使用的是自己搭建的服务器，使用IPv6+DDNS实现公网访问。如果你无法访问，可能是由于你的网络环境不支持IPv6（通常是公司内网和校园网），你可以到IPv6 测试 (test-ipv6.com)这个网站测试你是否支持IPv6，如果不支持可以连接手机热点后访问，手机网络一般支持IPv6
+项目的部署使用的是自己搭建的服务器，使用IPv6+DDNS实现公网访问。如果你无法访问，可能是由于你的网络环境**不支持IPv6（通常是公司内网和校园网）**，你可以到IPv6 测试 (https://test-ipv6.com)这个网站测试你是否支持IPv6，如果不支持可以连接手机热点后访问，手机网络一般支持IPv6
+
+在线访问：http://blog.antares.cool（测试账号：oj@qq.com 密码：12345678）
+
+github仓库：
+
+- 后端：[qk-antares/antares-blog-backend (github.com)](https://github.com/qk-antares/antares-blog-backend)
+- 前端：[qk-antares/antares-blog-frontend (github.com)](https://github.com/qk-antares/antares-blog-frontend)
+
+## 目录
+
+- [介绍](https://github.com/qk-antares/antares-blog-backend/blob/master/README.md)
+- [用户微服务](https://github.com/qk-antares/antares-blog-backend/blob/master/doc/USER_MODULE.md)
+- [博客微服务](https://github.com/qk-antares/antares-blog-backend/blob/master/doc/ARTICLE_MODULE.md)
+- [搜索微服务](https://github.com/qk-antares/antares-blog-backend/blob/master/doc/SEARCH_MODULE.md)
+- [优化和测试](https://github.com/qk-antares/antares-blog-backend/blob/master/doc/OPTIMIZE_TEST.md)
+- [部署](https://github.com/qk-antares/antares-blog-backend/blob/master/doc/DEPLOY.md)
 
 ## 技术栈
 
 ### 后端
 
 - Spring Cloud Gateway：
-    1. 最简单的应用，将请求转发到不同的微服务
+  1. 最简单的应用，将请求转发到不同的微服务
 - Spring Boot：
-    1. AOP切面编程搭配自定义异常来对异常做统一处理；
-    2. 定时任务（计算文章得分并刷新热榜，每日刷新推荐用户，定时将文章浏览量从redis同步到数据库）
-    3. 使用validation相关注解对请求的参数进行校验
+  1. AOP切面编程搭配自定义异常来对异常做统一处理；
+  2. 定时任务（计算文章得分并刷新热榜，每日刷新推荐用户，定时将文章浏览量从redis同步到数据库）
+  3. 使用validation相关注解对请求的参数进行校验
 - MySQL
-    1. 数据持久化，项目涉及到了极少量复杂查询
+  1. 数据持久化，项目涉及到了极少量复杂查询
 - Redis：
-    1. 缓存，包括热点文章，文章点赞、收藏、浏览量，推荐用户，消息通知数等。其中文章点赞、收藏、浏览量、消息通知是永久存储的（结合OpenResty的lua脚本，把查询缓存的逻辑前置到nginx，进一步提高响应速度）
-    2. 分布式锁（只用到了定时任务）
+  1. 缓存，包括热点文章，文章点赞、收藏、浏览量，推荐用户，消息通知数等。其中文章点赞、收藏、浏览量、消息通知是永久存储的（结合OpenResty的lua脚本，把查询缓存的逻辑前置到nginx，进一步提高响应速度）
+  2. 分布式锁（只用到了定时任务）
 - Elastic Search：
-    1. 搭配Jsoup爬虫，实现了聚合搜索功能
-    2. 搭配canal实现MySQL和ES的数据同步
+  1. 搭配Jsoup爬虫，实现了聚合搜索功能
+  2. 搭配canal实现MySQL和ES的数据同步
 - Netty：
-    1. 私聊（消息持久化、离线消息、消息通知，在线聊天过程中切换对话，接收不同对话的消息...）
+  1. 私聊（消息持久化、离线消息、消息通知，在线聊天过程中切换对话，接收不同对话的消息...）
 - RabbitMQ：
-    1. 最简单的应用，异步处理点赞、收藏、关注、发邮件等消息，提高响应速度。只用到了直接交换机
+  1. 最简单的应用，异步处理点赞、收藏、关注、发邮件等消息，提高响应速度。只用到了直接交换机
 - Nginx：
-    1. 反向代理服务器
-    2. lua脚本
+  1. 反向代理服务器
+  2. lua脚本
 - 其他：
-    1. CompletableFuture异步编程
-    2. 余弦相似度算法
+  1. CompletableFuture异步编程
+  2. 余弦相似度算法
 
 ---
 

@@ -44,4 +44,6 @@ public interface ArticleService extends IService<Article> {
     Page<ArticleVo> getUpdates(ArticleQueryRequest articleQueryRequest, HttpServletRequest request);
 
     void deleteArticle(Long id, HttpServletRequest request);
+
+    ArticleVo getArticleById(Long id, HttpServletRequest request);
 }

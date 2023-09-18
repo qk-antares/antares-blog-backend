@@ -32,6 +32,6 @@ mybatis-plus:
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 antares:
   thread: # 线程池配置
-    coreSize: 20
-    maxSize: 200
+    coreSize: 32
+    maxSize: 32
     keepAliveTime: 10

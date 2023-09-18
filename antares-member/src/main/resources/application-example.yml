@@ -47,6 +47,7 @@ mybatis-plus:
 server:
   port: 8123
 antares:
+  domain: antares.cool # cookie的作用域设置（实现同domain下的单点登录），本地运行请设置为localhost
   thread: # 线程池配置
     coreSize: 20
     maxSize: 200

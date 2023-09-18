@@ -1,6 +1,7 @@
 package com.antares.blog.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.json.JSONUtil;
 import com.antares.blog.feign.UserFeignService;
 import com.antares.blog.mapper.ArticleLikeMapper;
 import com.antares.blog.mapper.ArticleMapper;
@@ -498,8 +499,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
      * @return
      */
     public ArticleVo articleToVo(Article article, Long uid, boolean incrViewCount){
-        long start = System.currentTimeMillis();
-
         ArticleVo vo = new ArticleVo();
         //1. 查询点赞
         CompletableFuture<Void> likeFuture = CompletableFuture.runAsync(() -> {
@@ -529,7 +528,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             throw new BusinessException(AppHttpCodeEnum.INTERNAL_SERVER_ERROR);
         }
 
-        long end = System.currentTimeMillis();
         return vo;
     }
 
@@ -540,7 +538,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
      * @return
      */
     private List<ArticleVo> articlesToVos(List<Article> articles, Long uid){
-        long start = System.currentTimeMillis();
         int size = articles.size();
         ArticleVo[] articleVos = new ArticleVo[size];
         ArrayList<CompletableFuture<Void>> futures = new ArrayList<>(size);
@@ -556,7 +553,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
             futures.add(future);
         }
         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-        long end = System.currentTimeMillis();
 
         return Arrays.asList(articleVos);
     }
@@ -577,5 +573,60 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article>
     private void deleteContentCache(Long articleId){
         String contentCacheKey = ARTICLE_CONTENT_PREFIX + articleId + ARTICLE_CONTENT_SUFFIX;
         stringRedisTemplate.delete(contentCacheKey);
+    }
+
+    /**
+     * 这是一个测试接口，用来对比lua脚本和直接请求后端的性能差异
+     * @param id
+     * @param request
+     * @return
+     */
+    @Override
+    public ArticleVo getArticleById(Long id, HttpServletRequest request) {
+        UserInfoVo currentUser = redisUtils.getCurrentUser(request);
+
+        String articleCacheKey = "article:id:" + id + ":cover";
+        String articleJson = stringRedisTemplate.opsForValue().get(articleCacheKey);
+        ArticleVo articleVo = JSONUtil.toBean(articleJson, ArticleVo.class);
+
+        //设置点赞、收藏、评论这些异步缓存写入数据 以及 是否点赞、收藏这些个性化信息
+        String viewCacheKey = "article:id:" + id + ":view";
+        String likeCacheKey = "article:id:" + id + ":like";
+        String starCacheKey = "article:id:" + id + ":star";
+        String commentCacheKey = "article:id:" + id + ":comment";
+
+        //浏览数+1
+        Long viewCount = stringRedisTemplate.opsForValue().increment(viewCacheKey);
+        articleVo.setViewCount(viewCount);
+        //获取like信息
+        Set<String> likes = stringRedisTemplate.opsForSet().members(likeCacheKey);
+        if(likes != null){
+            articleVo.setLikeCount((long) likes.size());
+            articleVo.setIsLiked(currentUser != null && likes.contains(currentUser.getUid().toString()));
+        } else {
+            articleVo.setLikeCount(0L);
+            articleVo.setIsLiked(false);
+        }
+        //获取star信息
+        Set<String> stars = stringRedisTemplate.opsForSet().members(starCacheKey);
+        if(stars != null){
+            articleVo.setStarCount((long) stars.size());
+            articleVo.setIsStared(currentUser != null && stars.contains(currentUser.getUid().toString()));
+        } else {
+            articleVo.setStarCount(0L);
+            articleVo.setIsStared(false);
+        }
+        //获取commentCount
+        String commentCountStr = stringRedisTemplate.opsForValue().get(commentCacheKey);
+        if(commentCountStr != null){
+            articleVo.setCommentCount(Long.valueOf(commentCountStr));
+        } else {
+            articleVo.setCommentCount(0L);
+        }
+        //获取content
+        ArticleContentVo content = getArticleContentById(id);
+        articleVo.setContent(content.getContent());
+
+        return articleVo;
     }
 }

@@ -185,4 +185,17 @@ public class ArticleController {
         Page<ArticleVo> updates = articleService.getUpdates(articleQueryRequest, request);
         return R.ok(updates);
     }
+
+    /**
+     * 这是一个测试接口，用来对比lua脚本和直接请求后端的性能差异
+     * @param id
+     * @param request
+     * @return
+     */
+    @GetMapping("/article/{id}")
+    public R<ArticleVo> getArticleById(@PathVariable("id") Long id,
+                               HttpServletRequest request){
+        ArticleVo articleBasic = articleService.getArticleById(id, request);
+        return R.ok(articleBasic);
+    }
 }
