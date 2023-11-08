@@ -413,7 +413,7 @@ public void updateScoreAndHotJob(){
 
 我在设计评论功能时主要参考了bilibili的设计：
 
-![image-20230710085851908](http://image.antares.cool/PicGo/image-20230710085851908.png)
+![image-20230710085851908](https://article.biliimg.com/bfs/article/22a02ab4409de4e930276d826b9de08a38279841.png)
 
 可以看到这种评论有几个特点：
 

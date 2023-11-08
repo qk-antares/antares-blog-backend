@@ -4,11 +4,11 @@
 
 使用Lua脚本将查询缓存的逻辑前置到nginx（OpenResty），如果缓存命中则由nginx进行响应，缓存未命中才查询Tomcat，可以缓解Tomcat的压力，提升QPS
 
-![image-20230917141209765](http://image.antares.cool/PicGo/Project/Blog/Test/image-20230917141209765.png)
+![image-20230917141209765](https://qk-antares.github.io/img/blog/optimize_test/89dac515b5c979cb8b1ab0f72ee9732038279841.png)
 
 ### 测试条件
 
-![image-20230917154529256](https://article.biliimg.com/bfs/article/65a9588063ea103b4ee31a80a8a4348338279841.png)
+![image-20230917154529256](https://qk-antares.github.io/img/blog/optimize_test/65a9588063ea103b4ee31a80a8a4348338279841.png)
 
 ### 优化前
 
@@ -71,9 +71,9 @@ public ArticleVo getArticleById(Long id, HttpServletRequest request) {
 }
 ```
 
-![image-20230917154859625](https://article.biliimg.com/bfs/article/da7d89ca002ab0008fd5b6826e35cf2338279841.png)
+![image-20230917154859625](https://qk-antares.github.io/img/blog/optimize_test/da7d89ca002ab0008fd5b6826e35cf2338279841.png)
 
-![image-20230917154912989](https://article.biliimg.com/bfs/article/0cb1bf8598d89ac32ed993e23842e7d538279841.png)
+![image-20230917154912989](https://qk-antares.github.io/img/blog/optimize_test/0cb1bf8598d89ac32ed993e23842e7d538279841.png)
 
 可以看到，在线程数100，Ramp-up时间1s，循环次数10次的情况下，**QPS为45.5**，**平均响应时间2069ms**。测试还发现，进一步提升线程数，吞吐量虽然会上升，但是会出现异常响应。
 
@@ -175,15 +175,15 @@ local response = {
 ngx.say(cjson.encode(response))
 ```
 
-![image-20230917154949491](https://article.biliimg.com/bfs/article/5a6c24d0812d973ba1ecee71d92cb09a38279841.png)
+![image-20230917154949491](https://qk-antares.github.io/img/blog/optimize_test/5a6c24d0812d973ba1ecee71d92cb09a38279841.png)
 
-![image-20230917155022965](https://article.biliimg.com/bfs/article/a300c2e569b0949443ea2edd4062e04d38279841.png)
+![image-20230917155022965](https://qk-antares.github.io/img/blog/optimize_test/a300c2e569b0949443ea2edd4062e04d38279841.png)
 
 可以看到，在线程数100，Ramp-up时间1s，循环次数10次的情况下，**QPS为104.1**，**平均响应时间739ms**。相比于之前**QPS为45.5**，**平均响应时间2069ms**的结果，QPS提升超过1倍，平均响应时间缩短为原来的将近三分之一。
 
 测试还发现这仍然不是使用Lua脚本的性能上限，如果将线程数提升至400，则QPS还会进一步提升。
 
-![image-20230917155314283](https://article.biliimg.com/bfs/article/9e437500050e0d50b8a33bb75abce62a38279841.png)
+![image-20230917155314283](https://qk-antares.github.io/img/blog/optimize_test/9e437500050e0d50b8a33bb75abce62a38279841.png)
 
 可以看到，在线程数400，Ramp-up时间1s，循环次数10次的情况下，**QPS为241.6**，**平均响应时间1479ms**。**平均响应时间依然比原本小**，而且**QPS提升了5倍多**。
 
@@ -197,15 +197,15 @@ ngx.say(cjson.encode(response))
 
 - 根据分页请求参数到article表中查询最原始的信息
 - 对于分页中的每个article：
-    - 根据id到article_tag_relation表中查询这个article涉及的标签id，得到一个tagIds，并根据该tagIds，到article_tag表中查询对应的tag信息
-    - 根据created_by属性查询文章作者信息
-    - 由于文章浏览量、点赞、收藏、评论数使用的是异步缓存写入，最新数据位于Redis中，因此还需要到Redis中查询这些数据，此外还要查询用户是否点赞、收藏了该文章
+  - 根据id到article_tag_relation表中查询这个article涉及的标签id，得到一个tagIds，并根据该tagIds，到article_tag表中查询对应的tag信息
+  - 根据created_by属性查询文章作者信息
+  - 由于文章浏览量、点赞、收藏、评论数使用的是异步缓存写入，最新数据位于Redis中，因此还需要到Redis中查询这些数据，此外还要查询用户是否点赞、收藏了该文章
 
 ### 测试条件
 
-![image-20230917154529256](https://article.biliimg.com/bfs/article/65a9588063ea103b4ee31a80a8a4348338279841.png)
+![image-20230917154529256](https://qk-antares.github.io/img/blog/optimize_test/65a9588063ea103b4ee31a80a8a4348338279841.png)
 
-![image-20230917165125457](https://article.biliimg.com/bfs/article/8b2db98b1938c87ccc8ff2111461e28e38279841.png)
+![image-20230917165125457](https://qk-antares.github.io/img/blog/optimize_test/8b2db98b1938c87ccc8ff2111461e28e38279841.png)
 
 ### 优化前
 
@@ -279,7 +279,7 @@ public ArticleVo articleToVo(Article article, Long uid, boolean incrViewCount){
 }
 ```
 
-![image-20230917165051036](https://article.biliimg.com/bfs/article/848e85cd755b5c4f2d7093b80358575938279841.png)
+![image-20230917165051036](https://qk-antares.github.io/img/blog/optimize_test/848e85cd755b5c4f2d7093b80358575938279841.png)
 
 可以看到，在线程数100，Ramp-up时间1s，循环次数10次的情况下，**QPS为19**，**平均响应时间5077ms**。这主要是因为这个接口涉及的流程确实很多，而且中间还有一些远程调用（获取文章作者信息），并发量稍微高一点，响应时间就会非常长。
 
@@ -392,7 +392,7 @@ private ArticleVo articleToVo(Article article, boolean incrViewCount){
 }
 ```
 
-![image-20230917170017139](https://article.biliimg.com/bfs/article/39c1cc1b85548df8e7a9b85fe22b844f38279841.png)
+![image-20230917170017139](https://qk-antares.github.io/img/blog/optimize_test/39c1cc1b85548df8e7a9b85fe22b844f38279841.png)
 
 可以看到，在线程数100，Ramp-up时间1s，循环次数10次的情况下，**QPS为143.4**，**平均响应时间584ms**。相比与之前**QPS为19，平均响应时间5077ms**，得到了质的提升。我进一步测试了线程数200、400的情况，QPS仍然有小幅度提升，最多到160，但是响应时间被拉长到1000+ms。
 

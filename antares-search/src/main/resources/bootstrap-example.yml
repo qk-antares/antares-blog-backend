@@ -8,3 +8,6 @@ spring:
       server-addr:  # Nacos地址
       username: nacos
       password:
+      config: # nacos作为配置中心，修改博客园爬虫的cookie
+        file-extension: yaml
+        namespace: 706215d4-bfaf-436d-af24-b09fd85c10e5

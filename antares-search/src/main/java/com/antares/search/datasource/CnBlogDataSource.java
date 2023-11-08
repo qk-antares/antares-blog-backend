@@ -9,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -19,7 +21,10 @@ import java.util.List;
  * 图片服务实现类
  */
 @Service
+@RefreshScope
 public class CnBlogDataSource implements DataSource<CnBlogVo> {
+    @Value("${antares.cnblog.cookie}")
+    private String cookie;
 
     /**
      * 根据关键词搜索博客园文章
@@ -30,6 +35,8 @@ public class CnBlogDataSource implements DataSource<CnBlogVo> {
      */
     @Override
     public Page<CnBlogVo> doSearch(String searchText, int pageNum, int pageSize, List<String> tags) {
+        System.out.println(cookie);
+
         if(pageSize != 10){
             throw new BusinessException(AppHttpCodeEnum.PARAMS_ERROR, "请求分页大小不合法");
         }
@@ -37,7 +44,7 @@ public class CnBlogDataSource implements DataSource<CnBlogVo> {
         String url = "https://zzk.cnblogs.com/s/blogpost?Keywords=" + searchText + "&pageindex=" + pageNum;
         Document doc = null;
         try {
-            doc = Jsoup.connect(url).cookie("NotRobot", "CfDJ8M-opqJn5c1MsCC_BxLIULmQfRnFy3fYZr1nlEmklKD2-I1A_kKEZAuy_51d5KqXY4RMYlVnFJvPjhFcO2yTzZQLame1DpMuJ7I5gEGjUV3vT0XSiuAg6gIDPzmJGlstzA").get();
+            doc = Jsoup.connect(url).cookie("NotRobot", cookie).get();
         } catch (IOException e) {
             throw new BusinessException(AppHttpCodeEnum.INTERNAL_SERVER_ERROR, "爬取信息失败！");
         }

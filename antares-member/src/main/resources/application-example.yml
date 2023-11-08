@@ -14,6 +14,7 @@ spring:
   rabbitmq:
     host:
     port: 5672
+    username:
     password:
     publisher-returns: true # 发送端，confirm Broker收到消息调用
     publisher-confirm-type: correlated # 发送端，ReturnsCallback当队列没收到消息时调用

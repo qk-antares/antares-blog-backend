@@ -484,7 +484,7 @@ stringRedisTemplate.executePipelined(new RedisCallback<Object>() {
 
 在不使用线程池的情况下，1000+用户量执行一次这个定时任务就需要3min32s。更何况这还只是查出id信息，没有根据id去查询用户的详细信息！！
 
-![image-20230514010413777](http://image.antares.cool/PicGo/image-20230514010413777.png)
+![image-20230514010413777](https://qk-antares.github.io/img/blog/user_module/867a4e45907728ecc286d577260be99b38279841.png)
 
 优化点：
 
@@ -493,7 +493,7 @@ stringRedisTemplate.executePipelined(new RedisCallback<Object>() {
 
 结果：12s5，这个结果非常可观了，质的飞跃！！！
 
-![image-20230514011201613](http://image.antares.cool/PicGo/image-20230514011201613.png)
+![image-20230514011201613](https://qk-antares.github.io/img/blog/user_module/4897d38784246f0691271067bb19b19338279841.png)
 
 ------
 
