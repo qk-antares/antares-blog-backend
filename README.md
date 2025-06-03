@@ -67,102 +67,102 @@ github仓库：
 - 接入了短信和邮件发送服务
 - 使用token作为会话保持的途径
 
-![image-20230530200851071](https://qk-antares.github.io/img/blog/readme/80062281e65837942b02db643a6cf3d838279841.png)
+![img](https://s2.loli.net/2025/06/03/ptPEXSe7qOL8Nsy.png)
 
-![image-20230530200916067](https://qk-antares.github.io/img/blog/readme/b05ce0ca60fede10a3fd32b57bf96ef738279841.png)
+![img](https://s2.loli.net/2025/06/03/RwLKzrG6thm8Ejk.png)
 
 #### 1.2 用户信息
 
 - OSS上传头像
 
-  ![image-20230530201103411](https://qk-antares.github.io/img/blog/readme/d1ccdfd139fe9e9ad3c70320a409c89238279841.png)
+  ![img](https://s2.loli.net/2025/06/03/jYuH5SWhIQTFUKZ.png)
 
 - 选择个人标签，支持自定义标签，但不支持自定义分类（学历、专业等）
 
-  ![image-20230530201150352](https://qk-antares.github.io/img/blog/readme/0c77b8339cd4144c205c1813b518ef8838279841.png)
+  ![img](https://s2.loli.net/2025/06/03/4f7m3PjdoDQIApb.png)
 
 - 安全设置
 
-  ![image-20230530201222717](https://qk-antares.github.io/img/blog/readme/66272a7e507fe646a4cc03cff4bea9a938279841.png)
+  ![img](https://s2.loli.net/2025/06/03/inrJ8XkZheopR91.png)
 
 - 用户中心
 
-  ![image-20230530205410139](https://qk-antares.github.io/img/blog/readme/ec7b2b4e81d4da107fc7480ec60450c238279841.png)
+  ![img](https://s2.loli.net/2025/06/03/TRYBvu6pIiw49tD.png)
 
   查看自己的文章、收藏夹、关注、粉丝信息
 
 
 #### 1.3 用户推荐
 
-![image-20230530202218784](https://qk-antares.github.io/img/blog/readme/95027d8d022887323c7cdb7dd5a229cf38279841.png)
+![img](https://s2.loli.net/2025/06/03/C1BVix2QPy5HtDk.png)
 
 相似度计算基于余弦相似度，所有标签有相同的权重。由于这个推荐计算比较慢，为了优化用户体验，每隔24小时自动刷新到redis中，当然用户也可以点击刷新获取新的推荐用户。
 
 #### 1.4 关注功能
 
-![image-20230530201620512](https://qk-antares.github.io/img/blog/readme/fedee88e5d8ec7ef51c81b7f66b2485b38279841.png)
+![img](https://s2.loli.net/2025/06/03/fOuBR6lLwEJxUZW.png)
 
-![image-20230530202246245](https://qk-antares.github.io/img/blog/readme/bfdb288bdbfbfce933552c7fcc6d187338279841.png)
+![img](https://s2.loli.net/2025/06/03/t1VNqAGP5XzdMZi.png)
 
-![image-20230530202324380](https://qk-antares.github.io/img/blog/readme/316d2b47777034b753c8b5e5c5d7caf338279841.png)
+![img](https://s2.loli.net/2025/06/03/O1KoBmIVzU8wQEx.png)
 
 #### 1.5 聊天功能
 
-![image-20230530202343935](https://qk-antares.github.io/img/blog/readme/778656c058bc8732783fb4ad1263992438279841.png)
+![img](https://s2.loli.net/2025/06/03/9KSMyx8friODVsu.png)
 
 实现了消息持久化、离线消息、滚动分页历史消息、消息通知。左侧可以搜索用户，在线过程中可以正确处理来自多个用户的消息（例如处理来自新conversation的消息，刷新conversation的unread和lastMessage）
 
-![image-20230530202713827](https://qk-antares.github.io/img/blog/readme/25ca2cc8c36eae24a8385a2a072b0ad438279841.png)
+![img](https://s2.loli.net/2025/06/03/NjBUA4ImZ159cXY.png)
 
-![image-20230530203205781](https://qk-antares.github.io/img/blog/readme/a5fbb501b20da909723c022e167f3b8f38279841.png)
+![img](https://s2.loli.net/2025/06/03/U6Zio8pbKhG4NJP.png)
 
 刷新页面后还可以查看最新的未读消息数
 
-![image-20230530205055763](https://qk-antares.github.io/img/blog/readme/0b1b696e0bcb0212118682773016391d38279841.png)
+![img](https://s2.loli.net/2025/06/03/db7TFAnKvGJh6x5.png)
 
 ### 2. 博客模块
 
 #### 2.1 创建博客
 
-![image-20230530205514406](https://qk-antares.github.io/img/blog/readme/81e345c81087ecaa09b0e11b5a070f8238279841.png)
+![img](https://s2.loli.net/2025/06/03/MdJXN5k7Gne9jHK.png)
 
 - 文章缩略图的上传
 
 - 文章标签，同样支持自定义标签
 
-  ![image-20230530205617002](https://qk-antares.github.io/img/blog/readme/afc6fe21efd3b78f42c41cbee6fb799238279841.png)
+  ![img](https://s2.loli.net/2025/06/03/MiE5QYGL4Kc3Nwk.png)
 
 #### 2.2 在线编辑博客
 
 使用了md-editor-rt这个组件库来提供在线编辑功能，同时用户也可以在创建笔记后对笔记的标题、摘要、缩略图等信息进行修改。
 
-![image-20230530205820157](https://qk-antares.github.io/img/blog/readme/7099a190724e89d79f372414405b005638279841.png)
+![img](https://s2.loli.net/2025/06/03/65WJkDQgobRTCYO.png)
 
 #### 2.3 博客浏览
 
 - 分页查询博客：
 
-  ![image-20230530211142982](https://qk-antares.github.io/img/blog/readme/fd4c685a4d48eb593710dd07a5161ee938279841.png)
+  ![img](https://s2.loli.net/2025/06/03/ZPKUYs7gEvV2jnb.png)
 
-  ![image-20230530211224006](https://qk-antares.github.io/img/blog/readme/5a2d2c929584c0d173efe3db3d3e8edc38279841.png)
+  ![img](https://s2.loli.net/2025/06/03/6Z7pVNeD2SsgzGq.png)
 
 - 博客动态，本质还是分页查询，只不过查询的条件是在自己关注的用户中
 
-  ![image-20230530211431616](https://qk-antares.github.io/img/blog/readme/bea169bff58fbc6480ebee0ac6cf2cf138279841.png)
+  ![img](https://s2.loli.net/2025/06/03/iL4mGBxYt3lzKog.png)
 
-  ![image-20230530211559673](https://qk-antares.github.io/img/blog/readme/990251cc09a248a775c497559968bfb938279841.png)
+  ![img](https://s2.loli.net/2025/06/03/gHp4PXWBNqQfZOD.png)
 
 - 查询笔记Detail
 
-  ![image-20230530210852750](https://qk-antares.github.io/img/blog/readme/c22f285a0d891b93d0fb9578d178a82838279841.png)
+  ![img](https://s2.loli.net/2025/06/03/gve8kItEbflZsGH.png)
 
-  ![image-20230530210916464](https://qk-antares.github.io/img/blog/readme/4dd725206f6571309ac5e5f4aa53ca0638279841.png)
+  ![img](https://s2.loli.net/2025/06/03/fEVHz3Swux982WU.png)
 
 博客是整个系统的核心，因此在设计过程中大量使用了Redis缓存和lua脚本来优化查询，将在详细设计中讲述。
 
 #### 2.4 博客点赞
 
-![image-20230530210036401](https://qk-antares.github.io/img/blog/readme/333fec70812e8898bdcb83fd58d1788038279841.png)
+![img](https://s2.loli.net/2025/06/03/Dv7ajJT3uIGhXR5.png)
 
 如图所示，用户可以对博客点赞，并且点赞记录使用set存储在redis中的，所以单个用户的点赞不会累积。
 
@@ -170,21 +170,21 @@ github仓库：
 
 提供了类似B站的收藏夹系统，一篇笔记可以放在多个收藏夹内，用户可以将笔记在收藏夹中自由移动，当这篇笔记在用户的所有收藏夹内都删除时，笔记的收藏数-1
 
-![image-20230530210323315](https://qk-antares.github.io/img/blog/readme/933301afa02f1244c7a31b5a6ea6b12238279841.png)
+![img](https://s2.loli.net/2025/06/03/L5pdozFGCm8IYUs.png)
 
-![image-20230530210342014](https://qk-antares.github.io/img/blog/readme/7a6db071921fa31ec786343d7efa046838279841.png)
+![img](https://s2.loli.net/2025/06/03/rRJMLNubt7hoVwQ.png)
 
 header也提供了访问文件夹的方式（分页的）：
 
-![image-20230530210441638](https://qk-antares.github.io/img/blog/readme/e60b5f7491f36e1dd4334201c8a7f7f838279841.png)
+![img](https://s2.loli.net/2025/06/03/HgmG72VNEPLlqj4.png)
 
 #### 2.6 博客评论
 
 评论系统也参考了B站，默认展示根评论，当点击展开回复查看子评论，支持子评论和子子...评论
 
-![image-20230530210544367](https://qk-antares.github.io/img/blog/readme/0b4c81b220ac0d87c04448373b9e39c438279841.png)
+![img](https://s2.loli.net/2025/06/03/2o8e3jK5xzn16ZF.png)
 
-![image-20230530210720295](https://qk-antares.github.io/img/blog/readme/ec9f62c63c179d2ec9d83c4c8129845438279841.png)
+![img](https://s2.loli.net/2025/06/03/IinfVrhqGbPSvO9.png)
 
 #### 2.7 热点博客
 
@@ -194,18 +194,18 @@ header也提供了访问文件夹的方式（分页的）：
 
 包括点赞、评论和消息通知
 
-![image-20230530220511400](https://qk-antares.github.io/img/blog/readme/d428f2ee6a88d64ae54db7492e6ad50a38279841.png)
+![img](https://s2.loli.net/2025/06/03/nMmXwzKdvVaRHDU.png)
 
-![image-20230530220534803](https://qk-antares.github.io/img/blog/readme/daff37f78f28f26035188ba286e2e35a38279841.png)
+![img](https://s2.loli.net/2025/06/03/fm6VoOAkvT7Gl1q.png)
 
 ### 3. 聚合搜索模块
 
 博客和用户搜索支持关键词+标签
 
-![image-20230530220143814](https://qk-antares.github.io/img/blog/readme/29598f862c98beaea6c6978adb0ab09d38279841.png)
+![img](https://s2.loli.net/2025/06/03/rI1oFEyVQqh83gO.png)
 
-![image-20230530220228431](https://qk-antares.github.io/img/blog/readme/bdaa1ddabf3cc9b472c7e71807c871b338279841.png)
+![img](https://s2.loli.net/2025/06/03/coluPzLVYa25bNA.png)
 
 利用Jsoup爬虫，可以获取站外搜索结果（博客园做了防爬虫处理，搜索要通过验证，然后返回cookie，该cookie有一定期限，所以爬虫不稳定）
 
-![image-20230530220413339](https://qk-antares.github.io/img/blog/readme/6247bf868f6c4eb117064c246664193438279841.png)
+![img](https://s2.loli.net/2025/06/03/XsbnJmxwlRh93iH.png)

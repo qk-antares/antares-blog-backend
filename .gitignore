@@ -20,3 +20,5 @@ target/
 **/target/
 .idea
 **/.idea
+
+.vscode/

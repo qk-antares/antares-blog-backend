@@ -6,11 +6,11 @@
 
 自定义新建虚拟机，选择稍后安装操作系统，内存至少给8G
 
-![image-20231107133759544](https://qk-antares.github.io/img/blog/deploy/1563e674d0e80d50fe3d5ae25484e69638279841.png)
+![image-20231107133759544](https://s2.loli.net/2024/11/01/EDF1j6Svhxd5GcW.png)
 
-![image-20231107133828669](https://qk-antares.github.io/img/blog/deploy/33bcd579e0db757006380767c890ba9b38279841.png)
+![image-20231107133828669](https://s2.loli.net/2024/11/01/tSdhjDWwARbpymX.png)
 
-![image-20231107133650802](https://qk-antares.github.io/img/blog/deploy/53a57bc337d2f105412e476ff8848b1438279841.png)
+![image-20231107133650802](https://s2.loli.net/2024/11/01/m7klD52aGqIyMHo.png)
 
 ##### 安装Debian
 
@@ -24,15 +24,15 @@
 
 4. 磁盘分区，因为我是16G内存，所以把swap改为了16G
 
-   ![image-20231107134416125](https://qk-antares.github.io/img/blog/deploy/8bab1d4547e1679cad55fa96871cfaa638279841.png)
+   ![image-20231107134416125](https://s2.loli.net/2024/11/01/O1Ktxl8VmMgeQ4P.png)
 
 5. 选择清华源，实测比官方源快
 
-   ![image-20231107134600377](https://qk-antares.github.io/img/blog/deploy/36f5405900bbf201f2a2ffd36408521738279841.png)
+   ![image-20231107134600377](https://s2.loli.net/2024/11/01/dLsAhpPc2NZzwym.png)
 
 6. （重要）取消勾选Debian桌面环境和GNOME，勾选SSH server，这样我们最终安装的才是无GUI的
 
-   ![image-20231107135320301](https://qk-antares.github.io/img/blog/deploy/b8454217851d3f4330ce6a0c443ab2bc38279841.png)
+   ![image-20231107135320301](https://s2.loli.net/2024/11/01/JU6CuVxzRgs7FEK.png)
 
 ##### 基础配置
 
@@ -73,7 +73,7 @@ netmask 255.255.255.0 # 设置子网掩码
 gateway 192.168.32.2 # 设置网关，同样要和VMware保持一致
 ```
 
-![image-20231107140035430](https://qk-antares.github.io/img/blog/deploy/6d152df09720fa9ed282eb06aadebb0c38279841.png)
+![image-20231107140035430](https://s2.loli.net/2024/11/01/eZJnQAhxlVW36st.png)
 
 ###### 宝塔
 
@@ -89,17 +89,17 @@ bt 8
 
 在面板设置里，修改安全入口为/debian
 
-![image-20231107141930072](https://qk-antares.github.io/img/blog/deploy/390c4afc08240b443060a55774767c0138279841.png)
+![image-20231107141930072](https://s2.loli.net/2024/11/01/aTKeglfRPqYH6jm.png)
 
 根据个人喜好设置隐藏菜单
 
-![image-20231107142152646](https://qk-antares.github.io/img/blog/deploy/882515d29e0cd4f404996217a555ec2338279841.png)
+![image-20231107142152646](https://s2.loli.net/2024/11/01/gqb9WiBVJuRaoYU.png)
 
 到这里基础的虚拟机环境已经创建好了，建议这个虚拟机不要动了，后面从这个虚拟机**克隆**然后再进行操作，方便**复用**这个基础虚拟机环境（复用时记得修改静态IP，防止IP冲突）。
 
-![image-20231107142222330](https://qk-antares.github.io/img/blog/deploy/052779451c801affaa02c32ed5d1066e38279841.png)
+![image-20231107142222330](https://s2.loli.net/2024/11/01/qiBLKhkn4rGaeT8.png)
 
-![image-20231107142524188](https://qk-antares.github.io/img/blog/deploy/8e0563eee23c1eab64266b43091c56a038279841.png)
+![image-20231107142524188](https://s2.loli.net/2024/11/01/I2sMmCxaNeFLw8z.png)
 
 ---
 
@@ -129,11 +129,11 @@ source /etc/profile
 
 安装openresty版本
 
-![image-20231107142754445](https://qk-antares.github.io/img/blog/deploy/01179922fe37d8b4f069f0af7899564338279841.png)
+![image-20231107142754445](https://s2.loli.net/2024/11/01/4hYdcLkTreSu3QD.png)
 
 根据自己的情况修改worker进程数，默认是CPU核数，我是16核，但用不到这么多worker线程，因为每个worker线程占用几十MB内存
 
-![image-20230818164523913](https://qk-antares.github.io/img/blog/deploy/f08cf0cc2da7a9fd1978eae56f3d68738bc78a30.png)
+![image-20230818164523913](https://s2.loli.net/2024/11/01/PwVn9ZofUWsrGuB.png)
 
 ---
 
@@ -141,11 +141,11 @@ source /etc/profile
 
 直接安装
 
-![image-20231107142822578](https://qk-antares.github.io/img/blog/deploy/360dbffcdca32b55ce612c09c869226c38279841.png)
+![image-20231107142822578](https://s2.loli.net/2024/11/01/AgrmHXEuM19xben.png)
 
 安装完成后记得配置源，不然后面下载镜像巨慢，进入[阿里云](https://cr.console.aliyun.com/)，执行镜像加速器里的命令（debian可能要去掉sudo）
 
-![image-20231107143350062](https://qk-antares.github.io/img/blog/deploy/72e261074d5c2adf151def97b6d969ca38279841.png)
+![image-20231107143350062](https://s2.loli.net/2024/11/01/vFTYyZrUBeE6glQ.png)
 
 ```shell
 mkdir -p /etc/docker
@@ -164,7 +164,7 @@ systemctl restart docker
 
 依然选择直接安装，版本是8.0，安装完后配置root密码，配置允许root远程登录
 
-![image-20231107151322827](https://qk-antares.github.io/img/blog/deploy/79f5e49b50bc36c81ad0782f414b06cb38279841.png)
+![image-20231107151322827](https://s2.loli.net/2024/11/01/BZTwbv5sizGOQyu.png)
 
 ```shell
 mysql -uroot -p
@@ -197,7 +197,7 @@ mysql> flush privileges;
 
 直接安装，版本是6.2，在这个面板设置密码，并且把配置文件中的bind注释掉，从而可以所有IP连接Redis（线上环境可以设置成127.0.0.1或后端的IP）
 
-![image-20231107161353727](https://qk-antares.github.io/img/blog/deploy/2699c74fc39336375b392f0e3ecd6f7e38279841.png)
+![image-20231107161353727](https://s2.loli.net/2024/11/01/PDdFINJw9bQLkgE.png)
 
 ---
 
@@ -205,7 +205,7 @@ mysql> flush privileges;
 
 选择软件商店安装
 
-![image-20231107215236244](https://qk-antares.github.io/img/blog/deploy/64b111b657d29a8f7de0310d7aedfc2b38279841.png)
+![image-20231107215236244](https://s2.loli.net/2024/11/01/g1lcOXJ3C8oFIKw.png)
 
 ---
 
@@ -412,7 +412,7 @@ docker run -d --name ddns-go --restart=always --net=host -v /docker/ddns-go:/roo
 
 完成上述所有配置后的系统占用：
 
-![image-20231107232315649](https://qk-antares.github.io/img/blog/deploy/44cde30d951ea8319f0c84623252c6f938279841.png)
+![image-20231107232315649](https://s2.loli.net/2024/11/01/cBD92mOQ5w8pHMN.png)
 
 ---
 
@@ -424,16 +424,16 @@ docker run -d --name ddns-go --restart=always --net=host -v /docker/ddns-go:/roo
 
 ###### Nacos
 
-![img](https://qk-antares.github.io/img/blog/deploy/29b4fef2badf82ed03cba936b5ca3b3738279841.png)
+![img](https://s2.loli.net/2024/11/01/6iQVBUtugw2WEKC.png)
 
-![img](https://qk-antares.github.io/img/blog/deploy/1518c917be0c99d120a695ad704f793d38279841.png)
+![img](https://s2.loli.net/2024/11/01/xNf4uSZEriLzw3k.png)
 
 - 需要将bootstrap.yml中的nacos地址、username和password设置成自己的（本地nacos似乎不用设置username和password，默认是nacos/nacos）。
 - bootstrap-dev.yml中namespace设置成自己创建的命名空间（一般是dev一个命名空间，test一个命名空间，prod一个，以此类推）
 
 ###### MySQL & Redis & RabbitMQ
 
-![img](https://qk-antares.github.io/img/blog/deploy/a4e82278a2168d7796cfdb2d8b6a1ff038279841.png)
+![img](https://s2.loli.net/2024/11/01/J9ZBUdIv1N6VQo4.png)
 
 略，主要是配置地址，用户名，密码
 
@@ -443,7 +443,7 @@ docker run -d --name ddns-go --restart=always --net=host -v /docker/ddns-go:/roo
 
 member微服务的一个配置项
 
-![image-20230918142819342](https://qk-antares.github.io/img/blog/deploy/79318da9fcadea84a11ca4d8ec0639d738279841.png)
+![image-20230918142819342](https://s2.loli.net/2024/11/01/7W1tqFgjSbEAVOC.png)
 
 [SpringBoot实现QQ邮箱发送功能_springboot qq邮箱_☆夜幕星河℡的博客-CSDN博客](https://blog.csdn.net/qq_45660133/article/details/123499839)
 
@@ -455,13 +455,13 @@ member微服务的一个配置项
 
 member微服务，不起眼但是重要的一个配置
 
-![image-20230918143022120](https://qk-antares.github.io/img/blog/deploy/fe0d1f8eb0e96a1d6012740424f8bce038279841.png)
+![image-20230918143022120](https://s2.loli.net/2024/11/01/yo8qkxtLThYZplH.png)
 
 ---
 
 ###### 第三方服务
 
-![image-20230918143106688](https://qk-antares.github.io/img/blog/deploy/3852c4fc22592bede21ea9e13d780ea938279841.png)
+![image-20230918143106688](https://s2.loli.net/2024/11/01/G7up1yl3kA9dSmD.png)
 
 sms是使用的榛子云短信，oss使用的是七牛云，oauth是gitee。可以搜索相关的博客看这些配置项如何配置，都需要你们到自己的账号上操作一下。如果你只想把项目跑起来，可以先不配置
 
@@ -471,7 +471,7 @@ sms是使用的榛子云短信，oss使用的是七牛云，oauth是gitee。可�
 
 所有需要配置的量我都抽取到utils下的constants里的，你主要是需要修改BACKEND_DOMAIN和CLIENT_ID（不是必要的）
 
-![image-20231108152104354](https://qk-antares.github.io/img/blog/deploy/3d87612a520c898379e028c0b83d932338279841.png)
+![image-20231108152104354](https://s2.loli.net/2024/11/01/vt9fnmVTz5xSuR8.png)
 
 ---
 
@@ -479,15 +479,13 @@ sms是使用的榛子云短信，oss使用的是七牛云，oauth是gitee。可�
 
 将nginx文件夹下的配置拷贝到对应的位置（antares.conf除外，因为它是站点的配置）
 
-![img](https://qk-antares.github.io/img/blog/deploy/687474703a2f2f696d6167652e616e74617265732e636f6f6c2f506963476f2f50726f6a6563742f426c6f672f4465706c6f792f363031303937313236316135373165653530313735336161363735333932666633383237393834312e706e67)
-
 注意将lualib中的redisUtils-example重命名为redisUtils，并将其中的redis配置成自己的
 
-![image-20231108152406131](https://qk-antares.github.io/img/blog/deploy/58f3d7e88e7c7a3b5dfcfb2817bdc73838279841.png)
+![image-20231108152406131](https://s2.loli.net/2024/11/01/HrgKXp6J9wN3Yyo.png)
 
 创建站点
 
-![image-20230918144003433](https://qk-antares.github.io/img/blog/deploy/06efadb19233ba057dae2b766699925638279841.png)
+![image-20230918144003433](https://s2.loli.net/2024/11/01/hdG4uoI7MiHUDr5.png)
 
 配置站点的配置文件，具体内容就是项目nginx/conf下antares.conf的内容
 
@@ -857,12 +855,13 @@ Minio可以作为私人图床，使用阿里云或七牛云的OSS都有一定限
 
 首先是Docker安装Minio，见[依赖部署Minio](#minio)。创建一个名为blog的桶，并设置桶的权限为public（这样所有的人都可以访问你的图片，前提是他的网络环境支持IPv6）
 
-![image-20231108000146467](https://qk-antares.github.io/img/blog/deploy/883965e49256f2d8f49c9df96d84282b38279841.png)
+![image-20231108000146467](https://s2.loli.net/2024/11/01/AU5alZhRrWTeNHI.png)
 
 然后对PicGO进行配置，搜索并安装minio插件，配置项如下
 
-![image-20231108103526421](https://qk-antares.github.io/img/blog/deploy/71a7c09cb196c336d59b12911d4ab12538279841.png)
+![image-20231108103526421](https://s2.loli.net/2024/11/01/o5E2hPJtcLNeMqg.png)
 
 这里的debian.zqk.asia就是你在ddns-go中配置的域名，也就是你IPv6服务器的域名，为了区分不同的功能，你也可以在ddns-go中多添加一个minio.zqk.asia的解析，然后这里填minio.zqk.asia也行。
 
 最后对Typora进行配置，选择粘贴图片上进行上传
+
